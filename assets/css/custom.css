@@ -1,0 +1,43 @@
+ul {
+    list-style-type: none;
+    overflow: hidden;
+    background-color: #333;
+    width: 100%;
+  }
+  
+li {
+    float: right;
+  }
+  
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+li a:hover {
+    background-color: #111;
+  }
+
+.navbar {
+    margin-bottom: 10;
+    padding: 10px 0;
+
+    
+}  
+.navbar-brand {
+    color: #007730;
+    font-weight: 600;
+    padding-right: 60px;
+    padding-top: 0;
+    padding-bottom: 0;
+    transition-duration: 1s;
+    transition-property: color;
+
+    .img {
+        display: inline-block;
+        height: 50px;
+    }
+}
