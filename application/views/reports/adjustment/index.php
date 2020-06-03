@@ -15,7 +15,7 @@
 	<div class="col-sm-8">
 	  <div class="panel panel-primary">
 	    <div class="panel-heading">
-	        <h3 class="panel-title">ADJUSTMENT FORM</h3>
+	        <h3 class="panel-title">DELETE UPLOAD/CSV FORM</h3>
         	
 	    </div>
 	    <div class="panel-body">
@@ -63,14 +63,14 @@
 			   		<div class="col-md-5">
 	            <div class="form-group">
 	                <label for="form_name">START DATE</label>
-	                <input id="form_name" type="text" name="start_date" class="form-control" placeholder="YYYY-MM-DD">
+	                <input id="form_name" type="date" name="start_date" class="form-control" placeholder="YYYY-MM-DD">
 	            </div>
 	          </div>   
 			   	
 			   		<div class="col-md-5">
 	            <div class="form-group">
 	                <label for="form_name">END DATE</label>
-	                <input id="form_name" type="text" name="end_date" class="form-control" placeholder="YYYY-MM-DD">
+	                <input id="form_name" type="date" name="end_date" class="form-control" placeholder="YYYY-MM-DD">
 	            </div>
 	          </div>   
 			   	</div>

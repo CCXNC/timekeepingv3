@@ -1,6 +1,6 @@
 <style type="text/css">
 	.container {
-		margin-top: 100px;
+		margin-top: 60px;
 		margin-left: 100px;
 	}
 	p {
@@ -49,9 +49,9 @@
 		                    <td><?php echo $emp->company_name; ?></td>
 		                    <td><?php echo $emp->branch_name; ?></td>
 		                    <td>
-		                      <a class="btn btn-xs btn-info" href="<?php echo base_url(); ?>index.php/master/edit_employee/<?php echo $emp->id; ?>">Edit</a>
-		                      <a class="btn btn-danger btn-xs delete-btn" onclick="return confirm('Do you want to delete?');" href="<?php echo base_url(); ?>index.php/master/delete_employee/<?php echo $emp->id; ?>">Delete</a>
-		                      <a class="btn btn-primary btn-xs" onclick="return confirm('Do you want to inactive this employee?');" href="<?php echo base_url(); ?>index.php/master/inactive_employee/<?php echo $emp->id; ?>">Inactive</a>
+		                      <a class="btn-sm btn-primary" href="<?php echo base_url(); ?>index.php/master/edit_employee/<?php echo $emp->id; ?>/<?php echo $emp->employee_number; ?>">Edit</a>
+		                      <!--<a class="btn btn-danger btn-xs delete-btn" onclick="return confirm('Do you want to delete?');" href="<?php echo base_url(); ?>index.php/master/delete_employee/<?php echo $emp->id; ?>">Delete</a>-->
+		                      <a class="btn-sm btn-danger" onclick="return confirm('Do you want to inactive this employee?');" href="<?php echo base_url(); ?>index.php/master/inactive_employee/<?php echo $emp->id; ?>">Inactive</a>
 		                    </td>
 			                </tr>
 			                <?php endforeach; ?> 

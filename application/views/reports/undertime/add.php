@@ -13,7 +13,7 @@
 <div class="container">
 
 	<div class="col-sm-8">
-	  <div class="panel panel-primary">
+	  <div class="panel panel-primary"> 
 	    <div class="panel-heading">
 	        <h3 class="panel-title">UNDERTIME FORM</h3>
         	
@@ -35,7 +35,7 @@
 	              	<option value=" ">SELECT</option>
 	              	<?php if($employees) : ?>
 	              		<?php foreach($employees as $emp) : ?>
-	              			<option value="<?php echo $emp->name . '|' . $emp->employee_number; ?>"><?php echo $emp->name; ?></option>
+	              			<option value="<?php echo $emp->name . '|' . $emp->employee_number . '|' . $emp->branch_id . '|' . $emp->department_id; ?>"><?php echo $emp->name; ?></option>
 	              		<?php endforeach; ?>
 	              	<?php endif; ?>	
 	              </select>	
@@ -47,13 +47,13 @@
 	          <div class="col-md-5">
 	            <div class="form-group">
 	                <label for="form_name">DATE</label>
-	                <input id="form_name" type="text" name="date_ut" class="form-control" placeholder="YYYY-MM-DD">
+	                <input id="form_name" type="date" name="date_ut" class="form-control">
 	            </div>
 	          </div>
 	          <div class="col-md-5">
 	            <div class="form-group">
 	                <label for="form_name">TIME OUT</label>
-	                <input id="form_name" type="text" name="time_out" class="form-control" placeholder="HH:MM:SS">
+	                <input id="form_name" type="time" name="time_out" class="form-control">
 	            </div>
 	          </div>
 	        </div> 

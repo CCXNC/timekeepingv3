@@ -41,13 +41,13 @@
 	          <div class="col-md-5">
 	            <div class="form-group">
 	                <label for="form_name">DATE</label>
-	                <input id="form_name" type="text" name="date_ut" class="form-control" value="<?php echo $undertime->date_ut; ?> ">
+	                <input id="form_name" type="date" readonly="" name="date_ut" class="form-control" value="<?php echo $undertime->date_ut;?>">
 	            </div>
 	          </div>
 	          <div class="col-md-5">
 	            <div class="form-group">
 	                <label for="form_name">TIME OUT</label>
-	                <input id="form_name" type="text" name="time_out" class="form-control" value="<?php echo $undertime->time_out; ?>">
+	                <input id="form_name" type="time" name="time_out" class="form-control" value="<?php echo $undertime->time_out;?>">
 	            </div>
 	          </div>
 	        </div> 

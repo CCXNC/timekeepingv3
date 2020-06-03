@@ -46,16 +46,16 @@
 			   	</div>	
 			  	<div class="row">
 			  		<div class="col-md-10">
-		          <div class="form-group">
-		              <label for="form_name">TYPE</label>
-		              <select class="form-control" name="ob_type">
-		              	<option value=" ">SELECT</option>
-		              	<option value="WD">WHOLE DAY</option>
-		              	<option value="IN">OB (IN) AM</option>
-		              	<option value="OUT">OB (OUT) PM</option>
-		              </select>	
-		          </div>
-		      	</div>    
+						<div class="form-group">
+							<label for="form_name">TYPE</label>
+							<select class="form-control" name="ob_type">
+								<option value=" ">SELECT</option>
+								<option value="WD">WHOLE DAY</option>
+								<option value="IN">OB (IN) AM</option>
+								<option value="OUT">OB (OUT) PM</option>
+							</select>	
+						</div>
+		      		</div>    
 			   	</div>	
 			    
 		    	<div class="row">
@@ -83,13 +83,13 @@
 	        <div class="row">
 	          <div class="col-md-5">
 	            <div class="form-group">
-	                <label for="form_name">IN</label>
+	                <label for="form_name">TIME</label>
 	                <input id="form_name" type="time" name="time_of_departure" class="form-control">
 	            </div>
 	          </div>
 	          <div class="col-md-5">
 	            <div class="form-group">
-	                <label for="form_name">OUT</label>
+	                <label for="form_name">&nbsp;</label>
 	                <input id="form_name" type="time" name="time_of_return" class="form-control">
 	            </div>
 	          </div>

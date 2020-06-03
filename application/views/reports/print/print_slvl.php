@@ -77,7 +77,7 @@
 			<?php endif; ?>
 		</div>
 		<div class="title-gtlic">
-			<?php if($company_id == 1) : ?>
+			<?php if($company_id == 1) : ?> 
 				<b>GOLDEN TREASURE LENDING INVESTORS CORPORATION</b>
 			<?php endif; ?>
 		</div>	
@@ -99,6 +99,9 @@
 		 	<?php if($type == 'AB') : ?>
 		 		<p><b>ABSENCES LIST</b></p>
 		 	<?php endif; ?>	
+			 <?php if($type == 'EL') : ?>
+		 		<p><b>EMERGENCY LEAVE LIST</b></p>
+		 	<?php endif; ?>
 			<p><b>CutOff Date : <?php echo $start_date; ?> - <?php echo $end_date; ?></b></p> 
 		</div>
 		<table class="table table-bordered table-hover table-striped cl">
@@ -108,6 +111,7 @@
 				<th>Type</th>
 				<th>Reason</th>
 			</thead>
+			<?php ?>
 			<?php if($slvls) : ?>
 				<?php $i = 1; ?>
 				<?php foreach($slvls as $slvl) : ?>
@@ -123,7 +127,6 @@
 				<?php endforeach; ?>
 			<?php endif; ?>	
 		</table>
-		<?php //echo $i; ?>
 		<?php if($i >= 16) : ?>
 		<table class="table table-bordered table-hover table-striped cl" style="page-break-before: always;">
 			<?php if($slvls) : ?>

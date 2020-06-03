@@ -39,39 +39,41 @@
 		              	<option value="AB|SICK LEAVE W/OUT PAY">SICK LEAVE W/OUT PAY</option>
 		              	<option value="AB|AWOL">AWOL</option>
 		              	<option value="AB|SUSPENDED">SUSPENDED</option>
-		              	<option value="ML|MATERNITY LEAVE">MATERNITY LEAVE</option>
+		               	<option value="ML|MATERNITY LEAVE">MATERNITY LEAVE</option>
 		              	<option value="PL|PATERNITY LEAVE">PATERNITY LEAVE</option>
-		              	<option value="VL|EMERGENCY LEAVE">EMERGENCY LEAVE</option>
+		              	<option value="EL|EMERGENCY LEAVE">EMERGENCY LEAVE</option>
 		              	<option value="CL|Calamity Leave">CALAMITY LEAVE</option>
-		              	<option value="FL|Funeral Leave">FUNERAL LEAVE</option>
+		              	<option value="BL|BEREAVEMENT Leave">BEREAVEMENT LEAVE</option>
+						<option value="AB|ABSENT">ABSENT</option>
+						<option value="SSS|SSS SICKNESS LEAVE">SSS SICKNESS LEAVE</option>
 		              </select>	
 		          </div>
 			    	</div>
 			    	<div class="col-md-5">
-		          <div class="form-group">
-		              <label for="form_name">&nbsp;</label>
-		              <select class="form-control" name="HF">
-		              	<option value=" ">SELECT</option>
-		              	<option value="WD">WHOLEDAY</option>
-		              	<option value="HFAM">HALF DAY (AM)</option>
-		              	<option value="HFPM">HALF DAY (PM)</option>
-		              </select>	
-		          </div>
+						<div class="form-group">
+							<label for="form_name">&nbsp;</label>
+							<select class="form-control" name="HF">
+								<option value=" ">SELECT</option>
+								<option value="WD">WHOLEDAY</option>
+								<option value="HFAM">HALF DAY (AM)</option>
+								<option value="HFPM">HALF DAY (PM)</option>
+							</select>	
+						</div>
 			    	</div> 
 			   	</div>	
 			   	<div class="row">
 			   		<div class="col-md-10">
-	            <div class="form-group">
-              <label for="form_name">EMPLOYEE NAME</label>
-	              <select class="form-control" name="name">
-	              	<option value=" ">SELECT</option>
-	              	<?php if($employees) : ?>
-	              		<?php foreach($employees as $emp) : ?>
-	              			<option value="<?php echo $emp->name . '|' . $emp->employee_number . '|' . $emp->branch_id . '|' . $emp->department_id . '|' . $emp->sl_credit . '|' . $emp->vl_credit . '|' . $emp->elcl_credit . '|' . $emp->fl_credit; ?>"><?php echo $emp->name; ?></option>
-	              		<?php endforeach; ?>
-	              	<?php endif; ?>	
-	              </select>	
-	            </div>
+						<div class="form-group">
+							<label for="form_name">EMPLOYEE NAME</label>
+							<select class="form-control" name="name">
+								<option value=" ">SELECT</option>
+								<?php if($employees) : ?>
+									<?php foreach($employees as $emp) : ?>
+										<option value="<?php echo $emp->name . '|' . $emp->employee_number . '|' . $emp->branch_id . '|' . $emp->department_id . '|' . $emp->sl_credit . '|' . $emp->vl_credit . '|' . $emp->elcl_credit . '|' . $emp->fl_credit; ?>"><?php echo $emp->name; ?></option>
+									<?php endforeach; ?>
+								<?php endif; ?>	
+							</select>	
+						</div>
 			   		</div>
 			   	</div>	
 			    		

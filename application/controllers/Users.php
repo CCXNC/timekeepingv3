@@ -2,7 +2,7 @@
  
 class Users extends CI_Controller {
 
-	public function __construct()
+	public function __construct() 
 	{ 
 		parent::__construct();
 		date_default_timezone_set('Asia/Manila');
@@ -26,16 +26,16 @@ class Users extends CI_Controller {
 		else 
 		{
 			$policy_file = $this->payroll_model->add_slvl();
-			if($policy_file != NULL)
+			//print_r($policy_file);
+			if($policy_file)
 			{
 				$this->session->set_flashdata('add_msg_slvl', 'SL/VL SUCCESSFULLY ADDED!');
-				redirect('dashboard/dashboard');
 			}
 			else
 			{
 				$this->session->set_flashdata('policy_file_slvl', 'YOUR FILE CAN`T PROCEED DUE TO THE LEAVE POLICY!');
-				redirect('dashboard/dashboard');
 			}
+			redirect('dashboard/dashboard');
 		}
 		
 	}
@@ -80,7 +80,7 @@ class Users extends CI_Controller {
 	{
 		$user = $this->session->userdata('username');
 		$data = array(
-			'status'   => 'Disapproved'
+			'status'   => 'Disapproved By' . ' ' . $user 
 			);
 		$this->db->where('id', $id);
 		$this->db->update('tbl_slvl', $data);
@@ -93,32 +93,34 @@ class Users extends CI_Controller {
 	{
 		$user = $this->session->userdata('username');
 		$data = array(
-			'status'   => 'CANCELLED'
+			'status'   => 'CANCELLED BY' . ' ' . $user
 			);
 		$this->db->where('id', $id);
 		$this->db->update('tbl_slvl', $data);
 
-		$this->session->set_flashdata('cancelled_slvl', 'CANCELLED SLVL SUCCESSFULLY!');
+		$this->session->set_flashdata('cancel_msg', 'CANCELLED SLVL SUCCESSFULLY!');
 		redirect('reports/index_slvl');
 	}
 
 	public function slvl_list()
 	{
-		// HR
+		// HR HEAD
 		if($this->session->userdata('is_verify') == 1 && $this->session->userdata('is_hr') == 1)
 		{
 			if($this->input->server('REQUEST_METHOD') == 'POST')
 			{
 				$data['start_date'] = $this->input->post('start_date');
 				$data['end_date'] = $this->input->post('end_date');
+				$data['branch_id'] = $this->input->post('branch_id');
 			}
 			else 
 			{
 				$data['start_date'] = date('Y-m-d');
 				$data['end_date'] = date('Y-m-d');
+				$data['branch_id'] = $this->input->post('branch_id');
 			} 
 
-			$data['slvl'] = $this->users_model->get_slvl_all_by_isHr_and_isVerify($data['start_date'],$data['end_date'],$this->session->userdata('department_id')); 
+			$data['slvl'] = $this->users_model->get_slvl_all_by_isHr_and_isVerify($data['start_date'],$data['end_date'],$this->session->userdata('department_id'), $data['branch_id']); 
 		}
 
 		// SUPERVISORS
@@ -186,17 +188,15 @@ class Users extends CI_Controller {
 				$data['start_date'] = $this->input->post('start_date');
 				$data['end_date'] = $this->input->post('end_date');
 				$data['department_id'] = $this->session->userdata('department_id');
-				$data['branch_id'] = $this->session->userdata('branch_id');
 			}
 			else 
 			{
 				$data['start_date'] = date('Y-m-d');
 				$data['end_date'] = date('Y-m-d');
 				$data['department_id'] = ' ';
-				$data['branch_id']  = ' ';
 			} 
 
-			$data['slvl'] = $this->users_model->get_slvl_all_by_headSalesOperations($data['start_date'],$data['end_date'],$this->session->userdata('department_id'),$data['branch_id'] ); 
+			$data['slvl'] = $this->users_model->get_slvl_all_by_headSalesOperations($data['start_date'],$data['end_date'],$this->session->userdata('department_id')); 
 		}
 
 		// HEADS BILLING AND COLLECTION
@@ -207,15 +207,17 @@ class Users extends CI_Controller {
 				$data['start_date'] = $this->input->post('start_date');
 				$data['end_date'] = $this->input->post('end_date');
 				$data['department_id'] = $this->session->userdata('department_id');
+				$data['branch_id'] = $this->input->post('branch_id');
 			}
 			else 
 			{
 				$data['start_date'] = date('Y-m-d');
 				$data['end_date'] = date('Y-m-d');
 				$data['department_id'] = ' ';
+				$data['branch_id'] = $this->input->post('branch_id');
 			} 
 
-			$data['slvl'] = $this->users_model->get_slvl_all_by_Heads($data['start_date'],$data['end_date'],$this->session->userdata('department_id')); 
+			$data['slvl'] = $this->users_model->get_slvl_all_by_Heads($data['start_date'],$data['end_date'],$this->session->userdata('department_id'), $data['branch_id']); 
 		}
 
 		// HR ASSISTANT
@@ -225,14 +227,16 @@ class Users extends CI_Controller {
 			{
 				$data['start_date'] = $this->input->post('start_date');
 				$data['end_date'] = $this->input->post('end_date');
+				$data['branch_id'] = $this->input->post('branch_id');
 			}
 			else 
 			{
 				$data['start_date'] = date('Y-m-d');
 				$data['end_date'] = date('Y-m-d');
+				$data['branch_id'] = $this->input->post('branch_id');
 			} 
 
-			$data['slvl'] = $this->users_model->get_slvl_allbranch_rfv($data['start_date'],$data['end_date']); 
+			$data['slvl'] = $this->users_model->get_slvl_allbranch_rfv($data['start_date'],$data['end_date'],$data['branch_id']); 
 		}
 
 		// CFO PROCESS
@@ -254,6 +258,7 @@ class Users extends CI_Controller {
 			$data['slvl'] = $this->users_model->get_slvl_allbranch_process($data['start_date'],$data['end_date'],$data['department_id']); 
 		}
 
+		$data['branches'] = $this->master_model->get_branches();
 		$data['cut_off'] = $this->payroll_model->get_cut_off_date();
 		$data['employee'] = $this->payroll_model->get_user();
 		$data['main_content'] = 'users/lists/slvl_list'; 
@@ -293,7 +298,7 @@ class Users extends CI_Controller {
 			$data = array(
 				'approved_by'   => $this->session->userdata('username'),
 				'approved_date' => date('Y-m-d h:i:s'),
-				'status'        => 'Recommending for Verify'
+				'status'        => 'Recommending for Verification'
 			); 
 
 			$this->db->where('id', $explode_data[0]);
@@ -309,6 +314,14 @@ class Users extends CI_Controller {
 		$i = 0;
 		$emp_no_sl = 0;
 		$emp_no_vl = 0;
+		$emp_no_el = 0;
+		$emp_no_bl = 0;
+		$emp_no_ab = 0;
+		$compute_ab = 0;
+		$compute_bl = 0;
+		$compute_el = 0;
+		$compute_sl = 0;
+		$compute_vl = 0;
 		foreach($this->input->post('employee') as $slvl)
 		{
 			$explode_data = explode('|', $slvl);
@@ -326,7 +339,7 @@ class Users extends CI_Controller {
 				}
 
 				$data = array(
-					'sl_credit'       => $compute_sl
+					'sl_credit'   => $compute_sl
 				);
 				
 				$emp_no_sl = $explode_data[1];
@@ -347,20 +360,83 @@ class Users extends CI_Controller {
 				}
 
 				$data = array(
-					'vl_credit'       => $compute_vl
+					'vl_credit'  => $compute_vl
 				);
 				
 				$emp_no_vl = $explode_data[1];
 			
 				$this->db->where('employee_number', $explode_data[1]);
 				$this->db->update('leave_credits', $data);
-				
+			}
+
+			elseif($explode_data[4] == 'EL')
+			{
+				if($emp_no_el != $explode_data[1])
+				{
+					$compute_el = $explode_data[8] - $explode_data[10];
+				}
+				else
+				{
+					$compute_vl = $compute_vl - $explode_data[10];
+				}
+
+				$data = array(
+					'elcl_credit' => $compute_el
+				);
+
+				$emp_no_el = $explode_data[1];
+
+				$this->db->where('employee_number', $explode_data[1]);
+				$this->db->update('leave_credits', $data);
+			}
+
+			elseif($explode_data[4] == 'BL')
+			{
+				if($emp_no_bl != $explode_data[1])
+				{
+					$compute_bl = $explode_data[9] - $explode_data[10];
+				}
+				else
+				{
+					$compute_bl = $compute_bl - $explode_data[10];
+				}
+
+				$data = array(
+					'fl_credit'  => $compute_bl
+				);
+
+				$emp_no_bl = $explode_data[1];
+
+				$this->db->where('employee_number', $explode_data[1]);
+				$this->db->update('leave_credits', $data);
+			}
+
+			elseif($explode_data[4] == 'AB')
+			{
+				if($emp_no_ab != $explode_data[1])
+				{
+					$compute_ab += $explode_data[10];
+				}
+				else
+				{
+					$compute_ab += $explode_data[10];
+				}
+
+				$data = array(
+					'absences'  => $compute_ab
+				);
+
+				$emp_no_ab = $explode_data[1];
+
+				$this->db->where('employee_number', $explode_data[1]);
+				$this->db->update('leave_credits', $data);
+
 			}
 
 			$data = array(
 				'recommended_verify_by'  	 => $this->session->userdata('username'),
 				'recommended_verify_date'  => date('Y-m-d h:i:s'),
-				'status'                   => 'FOR VERIFY'
+				'status'                   => 'FOR VERIFICATION'
 			); 
 
 			$this->db->where('id', $explode_data[0]);
@@ -381,7 +457,7 @@ class Users extends CI_Controller {
 			$data = array(
 				'verified_by'  	 => $this->session->userdata('username'),
 				'verified_date'  => date('Y-m-d h:i:s'),
-				'status'         => 'FOR NOTED'
+				'status'         => 'FOR NOTIFICATION'
 			); 
 
 			$this->db->where('id', $explode_data[0]);
@@ -430,7 +506,7 @@ class Users extends CI_Controller {
 			$this->db->update('tbl_slvl', $data);
 
 			$data = array( 
-				'process_by' 			=> $this->session->userdata('username'),
+				'process_by' 		=> $this->session->userdata('username'),
 				'process_date' 		=> date('Y-m-d h:i:s'),
 				'status'        	=> 'PROCESSED'
 			);
@@ -453,8 +529,8 @@ class Users extends CI_Controller {
 						'for_id'               => $explode_data[0], 
 						'employee_number'      => $explode_data[1],
 						'name'                 => $explode_data[2],
-						'date'								 => $explode_data[3],
-						'type'								 => $explode_data[4],
+						'date'				   => $explode_data[3],
+						'type'				   => $explode_data[4],
 						'undertime_hr'         => 60,
 						'created_date'         => date('Y-m-d h:i:s'),
 						'process_date'         => date('Y-m-d h:i:s'),
@@ -470,8 +546,8 @@ class Users extends CI_Controller {
 						'for_id'               => $explode_data[0], 
 						'employee_number'      => $explode_data[1],
 						'name'                 => $explode_data[2],
-						'date'								 => $explode_data[3],
-						'type'								 => $explode_data[4],
+						'date'				   => $explode_data[3],
+						'type'				   => $explode_data[4],
 						'undertime_hr'         => 30,
 						'created_date'         => date('Y-m-d h:i:s'),
 						'process_date'         => date('Y-m-d h:i:s'),
@@ -487,8 +563,8 @@ class Users extends CI_Controller {
 						'for_id'               => $explode_data[0], 
 						'employee_number'      => $explode_data[1],
 						'name'                 => $explode_data[2],
-						'date'								 => $explode_data[3],
-						'type'								 => $explode_data[4],
+						'date'				   => $explode_data[3],
+						'type'				   => $explode_data[4],
 						'undertime_hr'         => 30,
 						'created_date'         => date('Y-m-d h:i:s'),
 						'process_date'         => date('Y-m-d h:i:s'),
@@ -523,16 +599,15 @@ class Users extends CI_Controller {
 		else
 		{
 			$policy_file = $this->payroll_model->add_ob();
-			if($policy_file != NULL)
+			if($policy_file)
 			{
 				$this->session->set_flashdata('add_msg_ob', 'OB SUCCESSFULLY ADDED!');
-				redirect('dashboard/dashboard');
 			}
 			else
 			{
 				$this->session->set_flashdata('policy_file_ob', 'YOUR DATA CAN`T PROCEED DUE TO THE DATE FILE!');
-				redirect('dashboard/dashboard');
 			}
+			redirect('dashboard/dashboard');
 		}
 		
 	}
@@ -575,13 +650,26 @@ class Users extends CI_Controller {
 	{
 		$user = $this->session->userdata('username');
 		$data = array(
-			'remarks'   => 'Disapproved'
+			'remarks'   => 'Disapproved By' . ' ' . $user
 			);
 		$this->db->where('id', $id);
 		$this->db->update('tbl_ob', $data);
 
 		$this->session->set_flashdata('disapproved_ob', 'DISAPPROVED OB SUCCESSFULLY!');
 		redirect('users/ob_list');
+	}
+
+	public function cancelled_ob($id)
+	{
+		$user = $this->session->userdata('username');
+		$data = array(
+			'remarks'   => 'CANCELLED BY' . ' ' . $user
+			);
+		$this->db->where('id', $id);
+		$this->db->update('tbl_ob', $data);
+
+		$this->session->set_flashdata('cancel_msg', 'CANCELLED OB SUCCESSFULLY!');
+		redirect('reports/index_ob');
 	}
 
 	public function ob_list()
@@ -593,14 +681,16 @@ class Users extends CI_Controller {
 			{
 				$data['start_date'] = $this->input->post('start_date');
 				$data['end_date'] = $this->input->post('end_date');
+				$data['branch_id'] = $this->input->post('branch_id');
 			}
 			else 
 			{
 				$data['start_date'] = date('Y-m-d');
 				$data['end_date'] = date('Y-m-d');
+				$data['branch_id'] = $this->input->post('branch_id');
 			} 
 
-			$data['obs'] = $this->users_model->get_ob_all_by_isHr_and_isVerify($data['start_date'],$data['end_date'],$this->session->userdata('department_id')); 
+			$data['obs'] = $this->users_model->get_ob_all_by_isHr_and_isVerify($data['start_date'],$data['end_date'],$this->session->userdata('department_id'), $data['branch_id']); 
 		}
 
 		// SUPERVISORS
@@ -707,16 +797,16 @@ class Users extends CI_Controller {
 			{
 				$data['start_date'] = $this->input->post('start_date');
 				$data['end_date'] = $this->input->post('end_date');
-				$data['department_id'] = $this->session->userdata('department_id');
+				$data['branch_id'] = $this->input->post('branch_id');
 			}
 			else 
 			{
 				$data['start_date'] = date('Y-m-d');
 				$data['end_date'] = date('Y-m-d');
-				$data['department_id'] = ' ';
+				$data['branch_id'] = $this->input->post('branch_id');
 			} 
 
-			$data['obs'] = $this->users_model->get_ob_allbranch_rfv($data['start_date'],$data['end_date']); 
+			$data['obs'] = $this->users_model->get_ob_allbranch_rfv($data['start_date'],$data['end_date'], $data['branch_id']); 
 		}
 
 		// CFO PROCESS
@@ -738,6 +828,7 @@ class Users extends CI_Controller {
 			$data['obs'] = $this->users_model->get_ob_allbranch_process($data['start_date'],$data['end_date'],$data['department_id']); 
 		}
 
+		$data['branches'] = $this->master_model->get_branches();
 		$data['cut_off'] = $this->payroll_model->get_cut_off_date();
 		$data['employee'] = $this->payroll_model->get_user();
 		$data['main_content'] = 'users/lists/ob_list'; 
@@ -755,9 +846,9 @@ class Users extends CI_Controller {
 			$id = $data_explode[0];
 
 			$data = array(
-				'recommended_approv_by'  	 => $this->session->userdata('username'),
+				'recommended_approv_by'    => $this->session->userdata('username'),
 				'recommended_approv_date'  => date('Y-m-d h:i:s'),
-				'remarks'         				 => 'FOR APPROVAL'
+				'remarks'         		   => 'FOR APPROVAL'
 			); 
 
 			$this->db->where('id', $id);
@@ -779,7 +870,7 @@ class Users extends CI_Controller {
 			$data = array(
 				'approved_by'  	 => $this->session->userdata('username'),
 				'approved_date'  => date('Y-m-d h:i:s'),
-				'remarks'         				 => 'Recommending for Verify'
+				'remarks'        => 'Recommending for Verification'
 			); 
 
 			$this->db->where('id', $id);
@@ -791,21 +882,102 @@ class Users extends CI_Controller {
 
 	public function rfv_ob()
 	{
+		$process_date = date('Y-m-d H:i:s');
 		foreach($this->input->post('employee') as $ob)
+		{
+			$data_explode = explode("|", $ob);
+
+			$id = $data_explode[0];
+			$emp_num = $data_explode[1];
+			$dateob = $data_explode[2];
+			$weekdate = $data_explode[3];
+			$type_ob = $data_explode[4]; 
+			$time_in = $data_explode[5];
+			$time_out = $data_explode[6];
+			$type = $data_explode[7];
+
+			if($type_ob == 'IN')
+			{
+				$data = array(
+					'times'  => $dateob." ".$time_in,
+					'status' => 'in'
+				);
+				$this->db->where('dates', $dateob);
+				$this->db->where('employee_number', $emp_num);
+				$this->db->update('tbl_in_attendance', $data);
+			}
+
+			elseif($type_ob == 'OUT')
+			{
+				if($weekdate == 5)
+				{
+					$data = array(
+						'times' => $dateob." ".$time_out,
+						'status' => 'out'
+					);
+					$this->db->where('dates', $dateob);
+					$this->db->where('employee_number', $emp_num);
+					$this->db->update('tbl_out_attendance', $data);
+				}
+				else
+				{
+					$data = array(
+						'times' => $dateob." ".$time_out,
+						'status' => 'out'
+					);
+					$this->db->where('dates', $dateob);
+					$this->db->where('employee_number', $emp_num);
+					$this->db->update('tbl_out_attendance', $data);
+				}
+			}
+
+			elseif($type_ob == 'WD')
+			{
+				$data = array(
+					'times'           => $dateob." ". $time_in,
+					'status'          => 'in'
+				);
+				
+				$this->db->where('dates', $dateob);
+				$this->db->where('employee_number', $emp_num);
+				$this->db->update('tbl_in_attendance', $data);
+		
+				$data = array(
+					'times'           => $dateob." ".$time_out,
+					'status'          => 'out'
+				);
+				$this->db->where('dates', $dateob);
+				$this->db->where('employee_number', $emp_num);
+				$this->db->update('tbl_out_attendance', $data);
+				
+			}
+
+			$data = array(
+				'recommended_verify_by'    => $this->session->userdata('username'),
+				'recommended_verify_date'  => date('Y-m-d h:i:s'),
+				'remarks'         		   => 'FOR NOTIFICATION'
+			); 
+
+			$this->db->where('id', $id);
+			$this->db->update('tbl_ob', $data);
+
+		}
+	
+		/*foreach($this->input->post('employee') as $ob)
 		{
 			$data_explode = explode("|", $ob);
 
 			$id = $data_explode[0];
 
 			$data = array(
-				'recommended_verify_by'  	 => $this->session->userdata('username'),
+				'recommended_verify_by'    => $this->session->userdata('username'),
 				'recommended_verify_date'  => date('Y-m-d h:i:s'),
-				'remarks'         				 => 'FOR VERIFY'
+				'remarks'         		   => 'FOR NOTIFICATION'
 			); 
 
 			$this->db->where('id', $id);
 			$this->db->update('tbl_ob', $data);
-		}	
+		}*/	
 
 		redirect('users/ob_list');
 	}
@@ -853,7 +1025,7 @@ class Users extends CI_Controller {
 	}
 
 	public function afp_ob()
-	{
+	{ 
 		if($this->users_model->process_ob())
 		{
 			redirect('users/ob_list');
@@ -879,16 +1051,15 @@ class Users extends CI_Controller {
 		else
 		{
 			$policy_file = $this->payroll_model->add_ot();
-			if($policy_file != NULL)
+			if($policy_file)
 			{
 				$this->session->set_flashdata('add_msg_ot', 'OT SUCCESSFULLY ADDED!');
-				redirect('dashboard/dashboard');
 			}
 			else
 			{
 				$this->session->set_flashdata('policy_file_ot', 'YOUR DATA CAN`T PROCEED DUE TO THE DATE FILE!');
-				redirect('dashboard/dashboard');
 			}
+			redirect('dashboard/dashboard');
 		}
 	}
 
@@ -931,13 +1102,26 @@ class Users extends CI_Controller {
 	{
 		$user = $this->session->userdata('username');
 		$data = array(
-			'status'   => 'Disapproved'
+			'status'   => 'Disapproved By' . ' ' . $user
 			);
 		$this->db->where('id', $id);
 		$this->db->update('tbl_ot', $data);
 
 		$this->session->set_flashdata('disapproved_ot', 'DISAPPROVED OT SUCCESSFULLY!');
 		redirect('users/ot_list');
+	}
+
+	public function cancelled_ot($id)
+	{
+		$user = $this->session->userdata('username');
+		$data = array(
+			'status'   => 'CANCELLED BY' . ' ' . $user
+			);
+		$this->db->where('id', $id);
+		$this->db->update('tbl_ot', $data);
+
+		$this->session->set_flashdata('cancel_msg', 'CANCELLED OT SUCCESSFULLY!');
+		redirect('reports/index_ot');
 	}
 
 	public function ot_list()
@@ -949,14 +1133,16 @@ class Users extends CI_Controller {
 			{
 				$data['start_date'] = $this->input->post('start_date');
 				$data['end_date'] = $this->input->post('end_date');
+				$data['branch_id'] = $this->input->post('branch_id');
 			}
 			else 
 			{
 				$data['start_date'] = date('Y-m-d');
 				$data['end_date'] = date('Y-m-d');
+				$data['branch_id'] = $this->input->post('branch_id');
 			} 
 
-			$data['ots'] = $this->users_model->get_ot_all_by_isHr_and_isVerify($data['start_date'],$data['end_date'],$this->session->userdata('department_id')); 
+			$data['ots'] = $this->users_model->get_ot_all_by_isHr_and_isVerify($data['start_date'],$data['end_date'],$this->session->userdata('department_id'),$data['branch_id']); 
 		}
 
 		// SUPERVISORS
@@ -1063,16 +1249,16 @@ class Users extends CI_Controller {
 			{
 				$data['start_date'] = $this->input->post('start_date');
 				$data['end_date'] = $this->input->post('end_date');
-				$data['department_id'] = $this->session->userdata('department_id');
+				$data['branch_id'] = $this->input->post('branch_id');
 			}
 			else 
 			{
 				$data['start_date'] = date('Y-m-d');
 				$data['end_date'] = date('Y-m-d');
-				$data['department_id'] = ' ';
+				$data['branch_id'] = $this->input->post('branch_id');
 			} 
 
-			$data['ots'] = $this->users_model->get_ot_allbranch_rfv($data['start_date'],$data['end_date']); 
+			$data['ots'] = $this->users_model->get_ot_allbranch_rfv($data['start_date'],$data['end_date'], $data['branch_id']); 
 		}
 
 		// CFO PROCESS
@@ -1094,6 +1280,7 @@ class Users extends CI_Controller {
 			$data['ots'] = $this->users_model->get_ot_allbranch_process($data['start_date'],$data['end_date'],$data['department_id']); 
 		}
 
+		$data['branches'] = $this->master_model->get_branches();
 		$data['cut_off'] = $this->payroll_model->get_cut_off_date();
 		$data['main_content'] = 'users/lists/ot_list'; 
 		$this->load->view('layouts/main', $data);
@@ -1109,9 +1296,9 @@ class Users extends CI_Controller {
 			$id = $data_explode[0];
 
 			$data = array(
-				'recommended_approv_by'  	 => $this->session->userdata('username'),
+				'recommended_approv_by'    => $this->session->userdata('username'),
 				'recommended_approv_date'  => date('Y-m-d h:i:s'),
-				'status'         				 	 => 'FOR APPROVAL'
+				'status'         		   => 'FOR APPROVAL'
 			); 
 
 			$this->db->where('id', $id);
@@ -1133,7 +1320,7 @@ class Users extends CI_Controller {
 			$data = array(
 				'approved_by'  	 => $this->session->userdata('username'),
 				'approved_date'  => date('Y-m-d h:i:s'),
-				'status'         => 'Recommending for Verify'
+				'status'         => 'Recommending for Verification'
 			); 
 
 			$this->db->where('id', $id);
@@ -1152,9 +1339,9 @@ class Users extends CI_Controller {
 			$id = $data_explode[0];
 
 			$data = array(
-				'recommended_verify_by'  	 => $this->session->userdata('username'),
+				'recommended_verify_by'    => $this->session->userdata('username'),
 				'recommended_verify_date'  => date('Y-m-d h:i:s'),
-				'status'         				   => 'FOR VERIFY'
+				'status'         	       => 'FOR VERIFICATION'
 			); 
 
 			$this->db->where('id', $id);
@@ -1175,7 +1362,7 @@ class Users extends CI_Controller {
 			$data = array(
 				'verified_by'  	 => $this->session->userdata('username'),
 				'verified_date'  => date('Y-m-d h:i:s'),
-				'status'         => 'FOR NOTED'
+				'status'         => 'FOR NOTIFICATION'
 			); 
 
 			$this->db->where('id', $id);
@@ -1242,16 +1429,15 @@ class Users extends CI_Controller {
 		else
 		{
 			$policy_file = $this->payroll_model->add_undertime();
-			if($policy_file != NULL)
+			if($policy_file)
 			{
 				$this->session->set_flashdata('add_msg_ut', 'Undertime Successfully Added!');
-				redirect('dashboard/dashboard');
 			}
 			else
 			{
 				$this->session->set_flashdata('policy_file_ut', 'YOUR DATA CAN`T PROCEED DUE TO THE DATE FILE!');
-				redirect('dashboard/dashboard');
 			}
+			redirect('dashboard/dashboard');
 		}
 	
 	}	
@@ -1290,13 +1476,26 @@ class Users extends CI_Controller {
 	{
 		$user = $this->session->userdata('username');
 		$data = array(
-			'status'   => 'Disapproved'
+			'status'   => 'Disapproved By' . ' ' . $user
 			);
 		$this->db->where('id', $id);
 		$this->db->update('tbl_undertime', $data);
 
-		$this->session->set_flashdata('disapproved_ut', 'DISAPPROVED SLVL SUCCESSFULLY!');
+		$this->session->set_flashdata('disapproved_ut', 'DISAPPROVED UNDERTIME SUCCESSFULLY!');
 		redirect('users/ut_list');
+	}
+
+	public function cancelled_undertime($id)
+	{
+		$user = $this->session->userdata('username');
+		$data = array(
+			'status'   => 'CANCELLED BY' . ' ' . $user
+			);
+		$this->db->where('id', $id);
+		$this->db->update('tbl_undertime', $data);
+
+		$this->session->set_flashdata('cancel_msg', 'CANCELLED UNDERTIME SUCCESSFULLY!');
+		redirect('reports/index_undertime');
 	}
 
 	public function ut_list()
@@ -1307,14 +1506,16 @@ class Users extends CI_Controller {
 			{
 				$data['start_date'] = $this->input->post('start_date');
 				$data['end_date'] = $this->input->post('end_date');
+				$data['branch_id'] = $this->input->post('branch_id');
 			}
 			else 
 			{
 				$data['start_date'] = date('Y-m-d');
 				$data['end_date'] = date('Y-m-d');
+				$data['branch_id'] = $this->input->post('branch_id');
 			} 
 
-			$data['uts'] = $this->users_model->get_ut_all_by_isHr_and_isVerify($data['start_date'],$data['end_date'],$this->session->userdata('department_id')); 
+			$data['uts'] = $this->users_model->get_ut_all_by_isHr_and_isVerify($data['start_date'],$data['end_date'],$this->session->userdata('department_id'), $data['branch_id']); 
 		}
 
 		// SUPERVISORS
@@ -1421,16 +1622,16 @@ class Users extends CI_Controller {
 			{
 				$data['start_date'] = $this->input->post('start_date');
 				$data['end_date'] = $this->input->post('end_date');
-				$data['department_id'] = $this->session->userdata('department_id');
+				$data['branch_id'] = $this->input->post('branch_id');
 			}
 			else 
 			{
 				$data['start_date'] = date('Y-m-d');
 				$data['end_date'] = date('Y-m-d');
-				$data['department_id'] = ' ';
+				$data['branch_id'] = $this->input->post('branch_id');
 			} 
 
-			$data['uts'] = $this->users_model->get_ut_allbranch_rfv($data['start_date'],$data['end_date']); 
+			$data['uts'] = $this->users_model->get_ut_allbranch_rfv($data['start_date'],$data['end_date'], $data['branch_id']); 
 		}
 
 		// CFO PROCESS
@@ -1452,6 +1653,7 @@ class Users extends CI_Controller {
 			$data['uts'] = $this->users_model->get_ut_allbranch_process($data['start_date'],$data['end_date'],$data['department_id']); 
 		}
 
+		$data['branches'] = $this->master_model->get_branches();
 		$data['cut_off'] = $this->payroll_model->get_cut_off_date();
 		$data['main_content'] = 'users/lists/ut_list'; 
 		$this->load->view('layouts/main', $data);
@@ -1465,9 +1667,9 @@ class Users extends CI_Controller {
 			$data_w = date('w', strtotime($explode_data[3]));
 
 			$data = array(
-				'recommended_approv_by'  	 => $this->session->userdata('username'),
+				'recommended_approv_by'    => $this->session->userdata('username'),
 				'recommended_approv_date'  => date('Y-m-d h:i:s'),
-				'status'         					 => 'FOR APPROVAL'
+				'status'         		   => 'FOR APPROVAL'
 			); 
 
 			$this->db->where('id', $explode_data[0]);
@@ -1488,7 +1690,7 @@ class Users extends CI_Controller {
 			$data = array(
 				'approved_by'   => $this->session->userdata('username'),
 				'approved_date' => date('Y-m-d h:i:s'),
-				'status'        => 'Recommending for Verify'
+				'status'        => 'Recommending for Verification'
 			); 
 
 			$this->db->where('id', $explode_data[0]);
@@ -1507,9 +1709,9 @@ class Users extends CI_Controller {
 			$data_w = date('w', strtotime($explode_data[3]));
 
 			$data = array(
-				'recommended_verify_by'  	 => $this->session->userdata('username'),
+				'recommended_verify_by'    => $this->session->userdata('username'),
 				'recommended_verify_date'  => date('Y-m-d h:i:s'),
-				'status'                   => 'FOR VERIFY'
+				'status'                   => 'FOR VERIFICATION'
 			); 
 
 			$this->db->where('id', $explode_data[0]);
@@ -1530,7 +1732,7 @@ class Users extends CI_Controller {
 			$data = array(
 				'verified_by'  	 => $this->session->userdata('username'),
 				'verified_date'  => date('Y-m-d h:i:s'),
-				'status'         => 'FOR NOTED'
+				'status'         => 'FOR NOTIFICATION'
 			); 
 
 			$this->db->where('id', $explode_data[0]);

@@ -57,6 +57,7 @@
               	<option value="">SELECT</option>
               	<option value="SL">SICK LEAVE</option>
               	<option value="VL">VACATION LEAVE</option>
+				<option value="EL">EMERGENCY LEAVE</option>
               	<option value="AB">ABSENCES</option>
               	<option value="OT">OVERTIME</option>
               	<option value="OB">OFFICIAL BUSINESS</option>

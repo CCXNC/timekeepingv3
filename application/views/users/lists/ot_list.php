@@ -17,11 +17,8 @@
 	}
 </style>
 <div class="margin">
-	<?php if($this->session->flashdata('add_msg')) : ?>  
-	   <p class="alert alert-dismissable alert-success"><?php echo $this->session->flashdata('add_msg'); ?></p> 
-	<?php endif; ?>  
-	<?php if($this->session->flashdata('update_ot_msg')) : ?>  
-	   <p class="alert alert-dismissable alert-success"><?php echo $this->session->flashdata('update_ot_msg'); ?></p>  
+	<?php if($this->session->flashdata('update_msg')) : ?>  
+	   <p class="alert alert-dismissable alert-success"><?php echo $this->session->flashdata('update_msg'); ?></p>  
 	<?php endif; ?>     
 	<?php if($this->session->flashdata('disapproved_ot')) : ?> 
 	  <p class="alert alert-dismissable alert-danger"><?php echo $this->session->flashdata('disapproved_ot'); ?></p>  
@@ -38,44 +35,60 @@
 				      <div class="table-responsive">
 				          <table class="table table-bordered table-hover table-striped cl">
 				          	<div class="row">  	
-						          <div class="col-md-2">
-							          <div class="form-group">
-							              <label for="form_name">Start Date</label>
-							              <input id="form_name" type="date" name="start_date" class="form-control" value=" <?php echo $cut_off->start_date; ?>">
-							          </div>
-							        </div>
-							        <div class="col-md-2">
-							          <div class="form-group">
-							              <label for="form_name">End Date</label>
-							              <input id="form_name" type="date" name="end_date" class="form-control" value="<?php echo $cut_off->end_date; ?>">
-							          </div>
-							        </div>	
+								<div class="col-md-2">
+									<div class="form-group">
+										<label for="form_name">Start Date</label>
+										<input id="form_name" type="date" name="start_date" class="form-control" value="<?php echo $cut_off->start_date; ?>">
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<label for="form_name">End Date</label>
+										<input id="form_name" type="date" name="end_date" class="form-control" value="<?php echo $cut_off->end_date; ?>">
+									</div>
+								</div>
 
-							        <br>
-							        <button type="submit" class="btn btn-default">Load</button>
-							        <?php if($this->session->userdata('is_rfa') == 1 || $this->session->userdata('is_oichead') == 1 || $this->session->userdata('is_hr') == 1) : ?> 
-							        	<input class="btn btn-success" id="rfa" type="submit" value="RFA">  
-							        <?php endif; ?>	 
+								<?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_rfv') == 1 ) : ?>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label for="form_name">Branch</label>
+											<select class="form-control" name="branch_id">
+												<option value="ALL"<?php echo $branch_id == 'ALL' ? 'selected' : ''; ?>>ALL</option>
+												<?php if($branches) : ?>
+													<?php foreach($branches as $branch) : ?>
+														<option  value="<?php echo $branch->id; ?>" <?php echo $branch->id == $branch_id ? 'selected' : ' '; ?> ><?php echo $branch->name; ?></option>
+													<?php endforeach; ?>
+												<?php endif; ?>
+											</select>
+										</div>
+									</div>	
+								<?php endif; ?>	
 
-							        <?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_fa') == 2 || $this->session->userdata('is_fa') == 1 || $this->session->userdata('is_fa') == 4) : ?>           
-								        <input class="btn btn-info" id="fa" type="submit" value="FA">   
-								      <?php endif; ?>	  
+								<br>
+								<button type="submit" class="btn btn-default">Load</button>
+								<?php if($this->session->userdata('is_rfa') == 1 || $this->session->userdata('is_oichead') == 1 || $this->session->userdata('is_hr') == 1) : ?> 
+									<input class="btn btn-success" id="rfa" type="submit" value="RFA">  
+								<?php endif; ?>	 
 
-								      <?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_rfv') == 1) : ?> 
-								        <input class="btn btn-default" id="rfv" type="submit" value="RFV"> 
-								      <?php endif; ?>	
+								<?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_fa') == 2 || $this->session->userdata('is_fa') == 1 || $this->session->userdata('is_fa') == 4) : ?>           
+									<input class="btn btn-info" id="fa" type="submit" value="FA">   
+									<?php endif; ?>	  
 
-							        <?php if($this->session->userdata('is_hr') == 1) : ?> 
-								        <input class="btn btn-danger" id="fv" type="submit" value="FV"> 
-								      <?php endif; ?>	
+									<?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_rfv') == 1) : ?> 
+									<input class="btn btn-default" id="rfv" type="submit" value="RFV"> 
+									<?php endif; ?>	
 
-							        <?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_gm') == 1) : ?> 
-								        <input class="btn btn-warning" id="nb" type="submit" value="NB">
-								      <?php endif; ?>	
-							        <?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_cfo') == 1) : ?> 
-								        <input class="btn btn-primary" id="afp" type="submit" value="AFP"> 
-								      <?php endif; ?>  
-										  </div> 
+								<?php if($this->session->userdata('is_hr') == 1) : ?> 
+									<input class="btn btn-danger" id="fv" type="submit" value="FV"> 
+									<?php endif; ?>	
+
+								<?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_gm') == 1) : ?> 
+									<input class="btn btn-warning" id="nb" type="submit" value="FN">
+									<?php endif; ?>	
+								<?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_cfo') == 1) : ?> 
+									<input class="btn btn-primary" id="afp" type="submit" value="AFP"> 
+									<?php endif; ?>  
+							</div> 
 				            <thead>
 				                <tr>
 				                	<th><center><input type="checkbox" id="checkAll" name=""></center></th>
@@ -105,14 +118,14 @@
 				                    <td><?php echo $ot->time_in; ?></td>
 				                    <td><?php echo $ot->time_out; ?></td>
 				                    <td>
-							    	 					<?php
-							    	 						$ot_hrs = $ot->total_ot;
-							    	 						$hours = floor($ot_hrs / 60);
-																$minutes = $ot_hrs % 60;
-																$ot_hrs1 = $hours. '.' .$minutes;
-																echo $ot_hrs1;
-							    	 				  ?>
-							    	 				</td>
+										<?php
+											$ot_hrs = $ot->total_ot;
+											$hours = floor($ot_hrs / 60);
+											$minutes = $ot_hrs % 60;
+											$ot_hrs1 = $hours. '.' .$minutes;
+											echo $ot_hrs1;
+										?>
+									</td>
 				                    <td>
 				                    	<?php echo $ot->nature_of_work; ?>
 				                    </td>
@@ -123,9 +136,9 @@
 				                      <center>
 				                    		<?php if($ot->tbl_ot_status != 'PROCESSED') : ?>
 					                    		<?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_rfv')) : ?>
-					                      		<a class="btn btn-xs btn-primary" href="<?php echo base_url() ?>index.php/reports/edit_ot/<?php echo $ot->id; ?>">Edit</a>
+					                      			<a class="btn btn-xs btn-primary" href="<?php echo base_url() ?>index.php/reports/edit_ot/<?php echo $ot->id; ?>">Edit</a>
 					                    		<?php endif; ?>
-					                      	<a class="btn btn-danger btn-xs delete-btn" href="<?php echo base_url() ?>index.php/users/disapproved_ot/<?php echo $ot->id; ?>">Disapproved</a>
+					                      	<a class="btn btn-danger btn-xs delete-btn" onclick="return confirm('Do you want to disapproved this employee?');" href="<?php echo base_url() ?>index.php/users/disapproved_ot/<?php echo $ot->id; ?>">Disapproved</a>
 					                      <?php endif; ?>
 				                    	</center>
 				                    </td>

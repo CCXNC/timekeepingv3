@@ -31,8 +31,8 @@
 <?php if($this->session->flashdata('update_msg')) : ?>
    <p class="alert alert-dismissable alert-success"><?php echo $this->session->flashdata('update_msg'); ?></p>
 <?php endif; ?>
-<?php if($this->session->flashdata('delete_msg')) : ?>
-   <p class="alert alert-dismissable alert-danger"><?php echo $this->session->flashdata('delete_msg'); ?></p>
+<?php if($this->session->flashdata('cancel_msg')) : ?>
+   <p class="alert alert-dismissable alert-danger"><?php echo $this->session->flashdata('cancel_msg'); ?></p>
 <?php endif; ?>
 <!-- TABLE OF BRANCHES -->
 <div class="row">
@@ -50,7 +50,7 @@
 				          	<div class="col-md-2">
 						          <div class="form-group">
 						              <label for="form_name">Start Date</label>
-						              <input id="form_name" type="date" name="start_date" class="form-control" value=" <?php echo $cut_off->start_date; ?>">
+						              <input id="form_name" type="date" name="start_date" class="form-control" value="<?php echo $cut_off->start_date; ?>">
 						          </div>
 						        </div>
 						        <div class="col-md-2">
@@ -60,12 +60,12 @@
 						          </div>
 						        </div>	
 						        <br>
-						        <button type="submit" class="btn btn-primary">load</button>
+						        <button type="submit" class="btn btn-default">load</button>
 						        <input class="btn btn-success" id="rfa" type="submit" value="RFA"> 
 						        <input class="btn btn-info" id="fa" type="submit" value="FA"> 
 						        <input class="btn btn-default" id="rfv" type="submit" value="RFV"> 
 						        <input class="btn btn-danger" id="fv" type="submit" value="FV"> 
-						        <input class="btn btn-warning" id="nb" type="submit" value="NB">
+						        <input class="btn btn-warning" id="nb" type="submit" value="FN">
 						        <input class="btn btn-primary" id="afp" type="submit" value="AFP"> 
 								  </div> 
 			            <thead>
@@ -105,7 +105,7 @@
 		                    		{
 		                    			echo 'OB (PM) OUT'; 
 		                    		}
-		                    		elseif($ob->type_ob == 'IN')
+		                    		elseif($ob->type_ob == 'IN') 
 		                    		{
 		                    			echo 'OB (AM) IN'; 
 		                    		}
@@ -121,16 +121,14 @@
 		                    <td><?php echo $ob->time_of_return; ?></td>
 		                    <td><?php echo $ob->remarks; ?></td>
 		                    <td>
-		                    	<?php if($ob->remarks != 'PROCESSED') : ?>
-		                      	<a class="btn btn-xs btn-primary" href="<?php echo base_url() ?>index.php/reports/edit_ob/<?php echo $ob->id; ?>">Edit</a>
-		                    	<?php endif; ?>
-		                      <a class="btn btn-danger btn-xs delete-btn" href="<?php echo base_url() ?>index.php/users/disapproved_ob/<?php echo $ob->id; ?>">Disapproved</a>
+							<a class="btn btn-danger btn-xs delete-btn" onclick="return confirm('Do you want to delete?');" href="<?php echo base_url() ?>index.php/reports/delete_ob/<?php echo $ob->id; ?>/<?php echo $ob->employee_number; ?>/<?php echo $ob->type; ?>">Delete</a>
+		                    	<!-- <a class="btn btn-xs btn-primary" href="<?php //echo base_url() ?>index.php/reports/edit_ob/<?php //echo $ob->id; ?>">Edit</a> -->
+		                      	<a class="btn btn-danger btn-xs delete-btn" onclick="return confirm('Do you want to Cancel ob?');" href="<?php echo base_url() ?>index.php/users/cancelled_ob/<?php echo $ob->id; ?>">Cancelled</a>
 		                    </td>
 			                </tr>
 			                <?php endforeach; ?>
 			            <?php endif; ?>
 			    			</table>
-	      		</div>
 	  			</div>      
         </form>   
      </div>            

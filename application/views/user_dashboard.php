@@ -18,7 +18,7 @@
 </style>
 <div class="container">
 	<form method="post">
-	  <div class="col-sm-13">
+	  <div class="col-sm-12">
 		  <div class="panel panel-primary">
 		    <div class="panel-heading">
 		    	<h3 class="panel-title">
@@ -29,7 +29,7 @@
 				        ?>
 				      <?php endif; ?> 
 				      <div class="desslvl">
-			    			SL:&nbsp;<?php echo $leave_credit->sl_credit; ?> &nbsp; VL:&nbsp;<?php echo $leave_credit->vl_credit; ?> &nbsp; EL/CL:&nbsp;<?php echo $leave_credit->elcl_credit; ?> &nbsp; FL:&nbsp;<?php echo $leave_credit->fl_credit; ?>
+			    			SL:&nbsp;<?php echo $leave_credit->sl_credit; ?> &nbsp; VL:&nbsp;<?php echo $leave_credit->vl_credit; ?> &nbsp; EL:&nbsp;<?php echo $leave_credit->elcl_credit; ?> &nbsp; BL:&nbsp;<?php echo $leave_credit->fl_credit; ?>
 			    		</div>
 		    		</div>
 		    		
@@ -47,8 +47,8 @@
 		    	</div>
 		    </div>
 		    <div class="panel-body">
-		   		<div class="col-sm-13">
-					  <div class="panel panel-primary">
+		   		<div class="col-sm-12">
+					<div class="panel panel-primary">
 					    <div class="panel-heading">
 					        <h3 class="panel-title">SL/VL</h3>
 					    </div>
@@ -79,23 +79,26 @@
 				    	 		<?php if($slvl) : ?>
 				    	 			<?php foreach($slvl as $slvl) : ?>
 					    	 			<tr>
-
 					    	 				<td><?php echo date('D', strtotime($slvl->effective_date_start)); ?></td>
 					    	 				<td>
 					    	 					<?php
 					    	 				 		if($slvl->sl_am_pm == 'HFAM')
-		                    		{ 
-		                    			echo $slvl->type_name . '    |    ' . ' (Halfday AM) '; 
-		                    		}
-		                    		elseif($slvl->sl_am_pm == 'HFPM')
-		                    		{
-		                    			echo $slvl->type_name . '    |    ' . ' (Halfday PM) '; 
-		                    		}
-		                    		else
-		                    		{
-		                    			echo $slvl->type_name . '    |    ' . ' (WHOLEDAY) '; 
-		                    		}	
-					    	 				 	?>	
+													{ 
+														echo $slvl->type_name . '    |    ' . ' (Halfday AM) '; 
+													}
+													elseif($slvl->sl_am_pm == 'HFPM')
+													{
+														echo $slvl->type_name . '    |    ' . ' (Halfday PM) '; 
+													}
+													elseif($slvl->sl_am_pm == 'ADJ')
+													{
+														echo $slvl->type_name . '    |    ' . ' (ADJ) '; 
+													}
+													else
+													{
+														echo $slvl->type_name . '    |    ' . ' (WHOLEDAY) '; 
+													}	
+												?>	
 					    	 				 	
 					    	 				</td>
 					    	 				<td><?php echo $slvl->effective_date_start; ?></td>
@@ -104,24 +107,25 @@
 					    	 				<td>
 					    	 					<?php if($slvl->status != "PROCESSED") : ?>
 					    	 						<center>
-					    	 						<?php if($slvl->status != "Disapproved" && $slvl->status != "FOR APPROVAL") : ?>
-						    	 						<a class="btn btn-xs btn-primary" href="<?php echo base_url(); ?>index.php/users/edit_slvl/<?php echo $slvl->id; ?>">Edit</a>
-						    	 					<?php endif; ?>	
-						                	<a class="btn btn-xs btn-danger" onclick="return confirm('Do you want to Delete?');" href="<?php echo base_url(); ?>index.php/users/delete_slvl/<?php echo $slvl->id; ?>/<?php echo $slvl->employee_number;?>/<?php echo $slvl->type; ?>">Delete</a>
-						                </center>
-					              	<?php endif; ?>
-					              	<?php if($slvl->status == "PROCESSED") : ?>
-						                <center><a class="btn btn-xs btn-success" href="#">SUCCESS</a></center>
-					              	<?php endif; ?>
+														<a class="btn btn-xs btn-danger" onclick="return confirm('Do you want to Delete?');" href="<?php echo base_url(); ?>index.php/users/delete_slvl/<?php echo $slvl->id; ?>/<?php echo $slvl->employee_number;?>/<?php echo $slvl->type; ?>">Delete</a>
+													</center>
+												<?php endif; ?>
+												<?php if($slvl->status == "PROCESSED") : ?>
+													<center><a class="btn btn-xs btn-success" href="#">SUCCESS</a></center>
+												<?php endif; ?>
+												<?php if($slvl->status == "CANCELLED") : ?>
+													<center><a class="btn btn-xs btn-danger" href="#">CANCELLED</a></center>
+												<?php endif; ?> 
 					    	 				</td>
 					    	 			</tr>
 				    	 			<?php endforeach; ?>
 				    	 		<?php endif; ?>	
 				    	 	</table>
-					  </div>
-				  </div>
+					 	</div>
+					</div>								
+				</div>
 
-				  <div class="col-sm-13">
+				  <div class="col-sm-12">
 					  <div class="panel panel-primary">
 					    <div class="panel-heading">
 					        <h3 class="panel-title">OB</h3>
@@ -146,10 +150,10 @@
 				    	 				<th>Type</th>
 				    	 				<th>Date</th>
 				    	 				<th>From | To</th>
-			                <th>Departure (Time in)</th>
-			                <th>Return (Time out)</th>
-			                <th>Remarks</th>
-			                <th>Action</th>
+										<th>Departure (Time in)</th>
+										<th>Return (Time out)</th>
+										<th>Remarks</th>
+										<th>Action</th>
 				    	 			</tr>
 				    	 		</thead> 
 				    	 		<?php if($ob) : ?>
@@ -158,19 +162,19 @@
 					    	 				<td><?php echo date('D', strtotime($ob->date_ob)); ?></td>
 					    	 				<td>
 					    	 					<?php 
-		                    		if($ob->type_ob == 'UD_out')
-		                    		{
-		                    			echo 'UNDERTIME OUT'; 
-		                    		}
-		                    		elseif($ob->type_ob == 'UD_in')
-		                    		{
-		                    			echo 'HALFDAY IN'; 
-		                    		}
-		                    		elseif($ob->type_ob == 'WD')
-		                    		{
-		                    			echo 'WHOLEDAY'; 
-		                    		}
-		                    	?>
+													if($ob->type_ob == 'UD_out')
+													{
+														echo 'UNDERTIME OUT'; 
+													}
+													elseif($ob->type_ob == 'UD_in')
+													{
+														echo 'HALFDAY IN'; 
+													}
+													elseif($ob->type_ob == 'WD')
+													{
+														echo 'WHOLEDAY'; 
+													}
+												?>
 					    	 				</td>
 					    	 				<td><?php echo $ob->date_ob; ?></td>
 					    	 				<td><?php echo $ob->site_from . ' | ' . $ob->site_to ;?></td>
@@ -178,17 +182,18 @@
 					    	 				<td><?php echo $ob->time_of_return; ?></td>
 					    	 				<td><?php echo $ob->remarks; ?></td>
 					    	 				<td>
+												 
 					    	 					<?php if($ob->remarks != "PROCESSED") : ?>
 						    	 					<center>
-						    	 						<?php if($ob->remarks != "Disapproved") : ?>
-						    	 							<a class="btn btn-xs btn-primary" href="<?php echo base_url(); ?>index.php/users/edit_ob/<?php echo $ob->id; ?>">Edit</a>
-						    	 						<?php endif; ?>
-						                	<a class="btn btn-danger btn-xs delete-btn" onclick="return confirm('Do you want to delete?');" href="<?php echo base_url() ?>index.php/users/delete_ob/<?php echo $ob->id; ?>/<?php echo $ob->employee_number; ?>/<?php echo $ob->type; ?>">Delete</a>
-						                </center>
-					              	<?php endif; ?>
-					              	<?php if($ob->remarks == "PROCESSED") : ?>
-						                <center><a class="btn btn-xs btn-success" href="#">SUCCESS</a></center>
-					              	<?php endif; ?>
+														<?php if($ob->remarks == "Recommending for Approval" || $ob->remarks == "FOR APPROVAL" ) : ?>
+															<a class="btn btn-xs btn-primary" href="<?php echo base_url(); ?>index.php/users/edit_ob/<?php echo $ob->id; ?>">Edit</a>
+														<?php endif; ?>
+														<a class="btn btn-danger btn-xs delete-btn" onclick="return confirm('Do you want to delete?');" href="<?php echo base_url() ?>index.php/users/delete_ob/<?php echo $ob->id; ?>/<?php echo $ob->employee_number; ?>/<?php echo $ob->type; ?>">Delete</a>
+													</center>
+												<?php endif; ?>
+												<?php if($ob->remarks == "PROCESSED") : ?>
+													<center><a class="btn btn-xs btn-success" href="#">SUCCESS</a></center>
+												<?php endif; ?>
 					    	 				</td>
 					    	 			</tr>
 				    	 			<?php endforeach; ?>
@@ -198,7 +203,7 @@
 					  </div>
 				  </div>
 
-				  <div class="col-sm-13">
+				  <div class="col-sm-12">
 					  <div class="panel panel-primary">
 					    <div class="panel-heading">
 					        <h3 class="panel-title">OVERTIME</h3>
@@ -221,13 +226,13 @@
 				    	 			<tr>
 				    	 				<th>Days</th>
 				    	 				<th>Type</th>
-	                    <th>Date</th>
-	                    <th>Time In</th>
-	                    <th>Time Out</th>
-	                    <th>OT Hours</th>
-	                    <th>Nature Of Work</th>
-	                    <th>Status</th>
-	                    <th>Action</th>
+										<th>Date</th>
+										<th>Time In</th>
+										<th>Time Out</th>
+										<th>OT Hours</th>
+										<th>Nature Of Work</th>
+										<th>Status</th>
+										<th>Action</th>
 				    	 			</tr>
 				    	 		</thead>
 				    	 		<?php $ot_total_hrs = 0; ?>
@@ -243,11 +248,11 @@
 					    	 					<?php
 					    	 						$ot_hrs = $ot->total_ot;
 					    	 						$hours = floor($ot_hrs / 60);
-														$minutes = $ot_hrs % 60;
-														$ot_hrs1 = $hours. '.' .$minutes;
-														$ot_total_hrs += $ot_hrs1; 
-														echo $ot_hrs1;
-					    	 				  ?>
+													$minutes = $ot_hrs % 60;
+													$ot_hrs1 = $hours. '.' .$minutes;
+													$ot_total_hrs += $ot_hrs1; 
+													echo $ot_hrs1;
+					    	 				  	?>
 					    	 				</td>
 
 					    	 				<td><?php echo $ot->nature_of_work; ?></td>
@@ -255,15 +260,15 @@
 					    	 				<td>
 					    	 					<?php if($ot->status != "PROCESSED") : ?>
 						    	 					<center>
-						    	 						<?php if($ot->status != "Disapproved") : ?>
+						    	 						<?php if($ot->status == "Recommending for Approval" || $ot->status == "FOR APPROVAL") : ?>
 						    	 							<a class="btn btn-xs btn-primary" href="<?php echo base_url(); ?>index.php/users/edit_ot/<?php echo $ot->id; ?>">Edit</a>
-						    	 						<?php endif; ?>
-						                	<a class="btn btn-danger btn-xs delete-btn" onclick="return confirm('Do you want to delete?');" href="<?php echo base_url() ?>index.php/users/delete_ot/<?php echo $ot->id; ?>">Delete</a>
-						                </center>
-					              	<?php endif; ?>
-					              	<?php if($ot->status == "PROCESSED") : ?>
-						                <center><a class="btn btn-xs btn-success" href="#">SUCCESS</a></center>
-					              	<?php endif; ?>
+						    	 						<?php endif; ?> 
+														<a class="btn btn-danger btn-xs delete-btn" onclick="return confirm('Do you want to delete?');" href="<?php echo base_url() ?>index.php/users/delete_ot/<?php echo $ot->id; ?>">Delete</a>
+													</center>
+												<?php endif; ?>
+												<?php if($ot->status == "PROCESSED") : ?>
+													<center><a class="btn btn-xs btn-success" href="#">SUCCESS</a></center>
+												<?php endif; ?>
 					    	 				</td>
 					    	 			</tr>
 				    	 			<?php endforeach; ?>
@@ -273,7 +278,7 @@
 					  </div>
 				  </div>
 
-				  <div class="col-sm-13">
+				  <div class="col-sm-12">
 					  <div class="panel panel-primary">
 					    <div class="panel-heading">
 					        <h3 class="panel-title">UNDERTIME</h3>
@@ -299,8 +304,8 @@
 				    	 				<th>Time out</th>
 				    	 				<th>UT Hours</th>
 				    	 				<th>Reason</th>
-			                <th>Status</th>
-			                <th>Action</th>
+										<th>Status</th>
+										<th>Action</th>
 				    	 			</tr>
 				    	 		</thead> 
 				    	 		<?php $undertime_total = 0; ?>
@@ -314,8 +319,8 @@
 					    	 					<?php 
 							    	 				$hr = floor($ut->ut_no / 60);
 							    	 				$minutes = $ut->ut_no % 60;
-														$mins = sprintf("%02d", $minutes); 
-														echo $hr .".". $mins ;
+													$mins = sprintf("%02d", $minutes); 
+													echo $hr .".". $mins ;
 						    	 				?>
 					    	 				</td>
 					    	 				<td><?php echo $ut->reason; ?></td>
@@ -323,12 +328,12 @@
 					    	 				<td>
 					    	 					<?php if($ut->status != "PROCESSED") : ?>
 						    	 					<center>
-						    	 						<?php if($ut->status != "Disapproved") : ?>
+						    	 						<?php if($ut->status == "Recommending for Approval" || $ut->status == "FOR APPROVAL" ) : ?>
 						    	 							<a class="btn btn-xs btn-primary" href="<?php echo base_url(); ?>index.php/users/edit_undertime/<?php echo $ut->id; ?>">Edit</a>
-						    	 						<?php endif; ?>
-						                	<a class="btn btn-danger btn-xs delete-btn" onclick="return confirm('Do you want to delete?');" href="<?php echo base_url() ?>index.php/users/delete_undertime/<?php echo $ut->id; ?>/<?php echo $ut->employee_number; ?>/<?php echo $ut->type; ?>">Delete</a>
-						                </center>
-					              	<?php endif; ?>
+						    	 							<?php endif; ?> 
+						                				<a class="btn btn-danger btn-xs delete-btn" onclick="return confirm('Do you want to delete?');" href="<?php echo base_url() ?>index.php/users/delete_undertime/<?php echo $ut->id; ?>/<?php echo $ut->employee_number; ?>/<?php echo $ut->type; ?>">Delete</a>
+						               			 	</center>
+					              				<?php endif; ?>
 					              	<?php if($ut->status == "PROCESSED") : ?>
 						                <center><a class="btn btn-xs btn-success" href="#">SUCCESS</a></center>
 					              	<?php endif; ?>

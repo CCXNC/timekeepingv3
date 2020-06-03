@@ -43,7 +43,7 @@
 			   		<div class="col-md-5">
 	            <div class="form-group">
 	                <label for="form_name">DATE</label>
-	                <input id="form_name" type="date" name="date" class="form-control" value="<?php echo $ot->date_ot; ?>">
+	                <input id="form_name" type="date" readonly="" name="date" class="form-control" value="<?php echo $ot->date_ot; ?>">
 	            </div>
 	          </div>
 			   	</div>	

@@ -30,12 +30,13 @@
 <?php if($this->session->flashdata('delete_msg')) : ?>
       <p class="alert alert-dismissable alert-danger"><?php echo $this->session->flashdata('delete_msg'); ?></p>
 <?php endif; ?>  
+<?php if($this->session->flashdata('disapproved_slvl')) : ?>
+	<p class="alert alert-dismissable alert-danger"><?php echo $this->session->flashdata('disapproved_slvl'); ?></p>
+<?php endif; ?>
 <!-- TABLE OF BRANCHES -->
 <div class="row">
 	<div class="col-lg-12">
-		<?php if($this->session->flashdata('disapproved_slvl')) : ?>
-	    <p class="alert alert-dismissable alert-danger"><?php echo $this->session->flashdata('disapproved_slvl'); ?></p>
-		<?php endif; ?>
+		
   	<div class="panel panel-primary">
     	<div class="panel-heading">
       	SL/VL List
@@ -48,7 +49,7 @@
 				          	<div class="col-md-2">
 						          <div class="form-group">
 						              <label for="form_name">Start Date</label>
-						              <input id="form_name" type="date" name="start_date" class="form-control" value=" <?php echo $cut_off->start_date; ?>">
+						              <input id="form_name" type="date" name="start_date" class="form-control" value="<?php echo $cut_off->start_date; ?>">
 						          </div>
 						        </div>
 						        <div class="col-md-2">
@@ -57,6 +58,21 @@
 						              <input id="form_name" type="date" name="end_date" class="form-control" value="<?php echo $cut_off->end_date; ?>">
 						          </div>
 						        </div>	
+								<?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_rfv') == 1 ) : ?>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label for="form_name">Branch</label>
+											<select class="form-control" name="branch_id">
+												<option value="ALL"<?php echo $branch_id == 'ALL' ? 'selected' : ''; ?>>ALL</option>
+												<?php if($branches) : ?>
+													<?php foreach($branches as $branch) : ?>
+														<option  value="<?php echo $branch->id; ?>" <?php echo $branch->id == $branch_id ? 'selected' : ' '; ?> ><?php echo $branch->name; ?></option>
+													<?php endforeach; ?>
+												<?php endif; ?>
+											</select>
+										</div>
+									</div>	
+								<?php endif; ?>	
 
 						        <?php if($employee) : ?>
 						        	<input type="hidden" name="department_id" value="<?php echo $employee->department_id; ?>">
@@ -81,21 +97,21 @@
 							      <?php endif; ?>	
 
 						        <?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_gm') == 1) : ?> 
-							        <input class="btn btn-warning" id="nb" type="submit" value="NB">
+							        <input class="btn btn-warning" id="nb" type="submit" value="FN">
 							      <?php endif; ?>	
 						        <?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_cfo') == 1) : ?> 
 							        <input class="btn btn-primary" id="afp" type="submit" value="AFP"> 
 							      <?php endif; ?>  
-								  </div>
+								  </div> 
 			            <thead>
 		                <tr>
 		                	<th><center><input type="checkbox" id="checkAll" name=""></center></th>
-	                    <th>Employee Name</th>
-	                    <th>Date</th>
-	                    <th>Type</th>
-	                    <th>Reason</th>
-	                    <th>Status</th>
-	                    <th><center>Action</center></th>
+							<th>Employee Name</th>
+							<th>Date</th>
+							<th>Type</th>
+							<th>Reason</th>
+							<th>Status</th>
+							<th><center>Action</center></th>
 		                </tr>
 			            </thead>
 		            	<tr>
@@ -131,10 +147,10 @@
 				                    <td>
 				                     <center>
 				                     	<?php if($slvl->status != "PROCESSED") : ?>
-				                     		<?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_rfv')) : ?>
+				                     	<!--<?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_rfv')) : ?>
 				                     			<a class="btn btn-xs btn-primary" href="<?php echo base_url(); ?>index.php/reports/edit_slvl/<?php echo $slvl->id; ?>">EDIT</a>
-				                     		<?php endif; ?>	
-				                     		<a class="btn btn-xs btn-danger" href="<?php echo base_url(); ?>index.php/users/disapproved_slvl/<?php echo $slvl->id; ?>">DISAPPROVED</a>
+				                     		<?php endif; ?>	-->
+				                     		<a class="btn btn-xs btn-danger" onclick="return confirm('Do you want to disapproved this employee?');" href="<?php echo base_url(); ?>index.php/users/disapproved_slvl/<?php echo $slvl->id; ?>">DISAPPROVED</a>
 				                     	<?php endif; ?>	
 				                     </center>
 				                    </td>

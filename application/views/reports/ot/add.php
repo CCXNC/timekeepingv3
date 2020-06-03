@@ -43,7 +43,7 @@
 			   		<div class="col-md-5">
 	            <div class="form-group">
 	                <label for="form_name">DATE</label>
-	                <input id="form_name" type="text" name="date" class="form-control" placeholder="YYYY-MM-DD">
+	                <input id="form_name" type="date" name="date" class="form-control">
 	            </div>
 	          </div>
 			   	</div>	
@@ -55,7 +55,7 @@
 	              	<option value=" ">SELECT</option>
 	              	<?php if($employees) : ?>
 	              		<?php foreach($employees as $emp) : ?>
-	              			<option value="<?php echo $emp->name . '|' . $emp->employee_number; ?>"><?php echo $emp->name; ?></option>
+	              			<option value="<?php echo $emp->name . '|' . $emp->employee_number . '|' . $emp->branch_id . '|' . $emp->department_id; ?>"><?php echo $emp->name; ?></option>
 	              		<?php endforeach; ?>
 	              	<?php endif; ?>	
 	              </select>	
@@ -66,13 +66,13 @@
 			  	  <div class="col-md-5">
 	            <div class="form-group">
 	                <label for="form_name">Time In</label>
-	                <input id="form_name" type="text" name="time_in" class="form-control" placeholder="HH:MM:SS">
+	                <input id="form_name" type="time" name="time_in" class="form-control" >
 	            </div>
 	          </div>
 	          <div class="col-md-5">
 	            <div class="form-group">
 	                <label for="form_name">Time Out</label>
-	                <input id="form_name" type="text" name="time_out" class="form-control" placeholder="HH:MM:SS">
+	                <input id="form_name" type="time" name="time_out" class="form-control" >
 	            </div>
 	          </div>
 			   	</div>	

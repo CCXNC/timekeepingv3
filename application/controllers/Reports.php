@@ -14,7 +14,7 @@ class Reports extends CI_Controller {
 			$this->session->set_flashdata('no_access', 'Sorry, you are not logged in');
 			
 			redirect('user/index');
-		}
+		} 
 	}
 
 	public function index_time_keeping()
@@ -49,6 +49,7 @@ class Reports extends CI_Controller {
 		$data['rdot_total'] = $this->payroll_model->get_restday_ot_emp($employee_no,$start_date, $end_date);
 		$data['ob'] = $this->payroll_model->get_ob1($employee_no,$start_date, $end_date);
 		$data['undertime'] = $this->payroll_model->get_undertime_emp($employee_no,$start_date, $end_date);
+		$data['ut_total'] = $this->payroll_model->get_total_ut($employee_no,$start_date, $end_date);
 		$data['remarks'] = $this->payroll_model->get_remark($employee_no, $start_date, $end_date);
 		$data['cwwut'] = $this->payroll_model->get_cwwut($employee_no,$start_date,$end_date);
 		$data['cut_off'] = $this->payroll_model->get_cut_off_date();
@@ -167,7 +168,7 @@ class Reports extends CI_Controller {
 		{
 			$data['start_date'] = $this->input->post('start_date');
 			$data['end_date'] = $this->input->post('end_date');
-		  $data['slvl_type'] = $this->input->post('slvl_type');
+		  	$data['slvl_type'] = $this->input->post('slvl_type');
 		}
 		else 
 		{
@@ -349,8 +350,6 @@ class Reports extends CI_Controller {
  
 	public function edit_ob($id)
 	{
-		$this->form_validation->set_rules('employee_number', 'Employee number', 'required|trim');
-		$this->form_validation->set_rules('name', 'Employee Name', 'required|trim');
 		$this->form_validation->set_rules('date', 'Date OF OB', 'required|trim');
 		$this->form_validation->set_rules('site_from', 'SITE / DESIGNATION', 'required|trim');
 		$this->form_validation->set_rules('site_to', 'SITE / DESIGNATION', 'required|trim');
@@ -445,9 +444,9 @@ class Reports extends CI_Controller {
 			$data['employees'] = $this->payroll_model->get_employees();
 			$this->load->view('layouts/main', $data);
 		}
-		else
+		else 
 		{
-			if($this->payroll_model->add_ot())
+			if($this->payroll_model->add_ot_by_hr())
 			{
 				$this->session->set_flashdata('add_msg', 'OT SUCCESSFULLY ADDED!');
 				redirect('reports/index_ot');
@@ -13891,6 +13890,7 @@ class Reports extends CI_Controller {
 		$data['absences'] = $this->payroll_model->get_total_ab($data['start_date'], $data['end_date']);
 		$data['sls'] = $this->payroll_model->get_total_sl($data['start_date'], $data['end_date']);
 		$data['vls'] = $this->payroll_model->get_total_vl($data['start_date'], $data['end_date']);
+		$data['els'] = $this->payroll_model->get_total_el($data['start_date'], $data['end_date']);
 		$data['cwwuts'] = $this->payroll_model->get_total_cwwut($data['start_date'], $data['end_date']);
 		$data['ots'] = $this->payroll_model->get_regular_ot($data['start_date'], $data['end_date']);
 		$data['night_diffs'] = $this->report_generation_model->get_total_night_diff($data['start_date'], $data['end_date']);
@@ -13916,7 +13916,7 @@ class Reports extends CI_Controller {
 			$data['type'] = ' ';
 		} 
 
-		if($data['type'] == 'SL' || $data['type'] == 'VL' || $data['type'] == 'AB')
+		if($data['type'] == 'SL' || $data['type'] == 'VL' || $data['type'] == 'AB' || $data['type'] == 'EL')
 		{
 			$data['slvls'] = $this->report_generation_model->get_slvl_datas($data['start_date'],$data['end_date'],$data['company_id'],$data['type']);
 			$this->load->view('reports/print/print_slvl', $data);
@@ -13944,7 +13944,7 @@ class Reports extends CI_Controller {
 	}
 
 
-	public function index_undertime()
+	public function index_undertime() 
 	{
 		if($this->input->server('REQUEST_METHOD') == 'POST')
 		{
@@ -13957,7 +13957,7 @@ class Reports extends CI_Controller {
 			$data['end_date'] = date('Y-m-d'); 
 		}
 		
-		$data['emps_under'] = $this->payroll_model->get_undertime($data['start_date'], $data['end_date']);
+		$data['uts'] = $this->payroll_model->get_undertime($data['start_date'], $data['end_date']);
 		$data['cut_off'] = $this->payroll_model->get_cut_off_date(); 
 		$data['main_content'] = 'reports/undertime/index';
 
@@ -13980,7 +13980,7 @@ class Reports extends CI_Controller {
 		}
 		else
 		{
-			if($this->payroll_model->add_undertime())
+			if($this->payroll_model->add_undertime_by_hr())
 			{
 				$this->session->set_flashdata('add_msg', 'Undertime Successfully Added!');
 				redirect('reports/index_undertime');
@@ -14013,9 +14013,9 @@ class Reports extends CI_Controller {
 		}
 	}
 
-	public function delete_undertime($id)
+	public function delete_undertime($id,$employee_number,$type)
 	{
-		if($this->payroll_model->delete_undertime($id))
+		if($this->payroll_model->delete_undertime($id,$employee_number,$type))
 		{
 			$this->session->set_flashdata('delete_msg', 'Undertime Successfully Deleted!');
 			redirect('reports/index_undertime');
@@ -14107,7 +14107,7 @@ class Reports extends CI_Controller {
 			$data = array(
 				'approved_by'   => $this->session->userdata('username'),
 				'approved_date' => date('Y-m-d h:i:s'),
-				'status'        => 'Recommending for Verify'
+				'status'        => 'Recommending for Verification'
 			); 
 
 			$this->db->where('id', $explode_data[0]);
@@ -14128,7 +14128,7 @@ class Reports extends CI_Controller {
 			$data = array(
 				'recommended_verify_by'  	 => $this->session->userdata('username'),
 				'recommended_verify_date'  => date('Y-m-d h:i:s'),
-				'status'                   => 'FOR VERIFY'
+				'status'                   => 'FOR VERIFICATION'
 			); 
 
 			$this->db->where('id', $explode_data[0]);
@@ -14149,7 +14149,7 @@ class Reports extends CI_Controller {
 			$data = array(
 				'verified_by'  	 => $this->session->userdata('username'),
 				'verified_date'  => date('Y-m-d h:i:s'),
-				'status'         => 'FOR NOTED'
+				'status'         => 'FOR NOTIFICATION'
 			); 
 
 			$this->db->where('id', $explode_data[0]);
@@ -14359,7 +14359,7 @@ class Reports extends CI_Controller {
 			$data = array(
 				'approved_by'  	 => $this->session->userdata('username'),
 				'approved_date'  => date('Y-m-d h:i:s'),
-				'remarks'        => 'Recommending for Verify'
+				'remarks'        => 'Recommending for Verification'
 			); 
 
 			$this->db->where('id', $id);
@@ -14367,7 +14367,7 @@ class Reports extends CI_Controller {
 		}	
 
 		redirect('reports/index_ob');
-	}
+	} 
 
 	public function rfv_ob()
 	{
@@ -14380,7 +14380,7 @@ class Reports extends CI_Controller {
 			$data = array(
 				'recommended_verify_by'  	 => $this->session->userdata('username'),
 				'recommended_verify_date'  => date('Y-m-d h:i:s'),
-				'remarks'         				 => 'FOR VERIFY'
+				'remarks'         				 => 'FOR VERIFICATION'
 			); 
 
 			$this->db->where('id', $id);
@@ -14401,7 +14401,7 @@ class Reports extends CI_Controller {
 			$data = array(
 				'verified_by'  	 => $this->session->userdata('username'),
 				'verified_date'  => date('Y-m-d h:i:s'),
-				'remarks'        => 'FOR NOTED'
+				'remarks'        => 'FOR NOTIFICATION'
 			); 
 
 			$this->db->where('id', $id);
@@ -14440,11 +14440,354 @@ class Reports extends CI_Controller {
 		}
 	}
 
+	public function rfa_ut()
+	{
+		foreach($this->input->post('employee') as $ut)
+		{
+			$explode_data = explode('|', $ut);
+			$data_w = date('w', strtotime($explode_data[3]));
+
+			$data = array(
+				'recommended_approv_by'    => $this->session->userdata('username'),
+				'recommended_approv_date'  => date('Y-m-d h:i:s'),
+				'status'         		   => 'FOR APPROVAL'
+			); 
+
+			$this->db->where('id', $explode_data[0]);
+			$this->db->update('tbl_undertime', $data);
+		}	
+
+		redirect('reports/index_undertime');
+	}
+
+	// FOR APPROVAL
+	public function fa_ut()
+	{
+		foreach($this->input->post('employee') as $ut)
+		{
+			$explode_data = explode('|', $ut);
+			$data_w = date('w', strtotime($explode_data[3]));
+
+			$data = array(
+				'approved_by'   => $this->session->userdata('username'),
+				'approved_date' => date('Y-m-d h:i:s'),
+				'status'        => 'Recommending for Verification'
+			); 
+
+			$this->db->where('id', $explode_data[0]);
+			$this->db->update('tbl_undertime', $data);
+		}	
+
+		redirect('reports/index_undertime');
+	}
+
+	//RECOMMENDING FOR VERIFY
+	public function rfv_ut()
+	{
+		foreach($this->input->post('employee') as $ut)
+		{
+			$explode_data = explode('|', $ut);
+			$data_w = date('w', strtotime($explode_data[3]));
+
+			$data = array(
+				'recommended_verify_by'    => $this->session->userdata('username'),
+				'recommended_verify_date'  => date('Y-m-d h:i:s'),
+				'status'                   => 'FOR VERIFICATION'
+			); 
+
+			$this->db->where('id', $explode_data[0]);
+			$this->db->update('tbl_undertime', $data);
+		}	
+
+		redirect('reports/index_undertime');
+	}
+
+	// FOR VERIFY
+	public function fv_ut()
+	{
+		foreach($this->input->post('employee') as $ut)
+		{
+			$explode_data = explode('|', $ut);
+			$data_w = date('w', strtotime($explode_data[3]));
+
+			$data = array(
+				'verified_by'  	 => $this->session->userdata('username'),
+				'verified_date'  => date('Y-m-d h:i:s'),
+				'status'         => 'FOR NOTIFICATION'
+			); 
+
+			$this->db->where('id', $explode_data[0]);
+			$this->db->update('tbl_undertime', $data);
+		}	
+
+		redirect('reports/index_undertime');
+	}
+
+	// NOTED BY
+	public function nb_ut()
+	{
+		foreach($this->input->post('employee') as $ut)
+		{
+			$explode_data = explode('|', $ut);
+			$data_w = date('w', strtotime($explode_data[3]));
+
+			$data = array(
+				'noted_by'	 => $this->session->userdata('username'),
+				'noted_date' => date('Y-m-d h:i:s'),
+				'status'     => 'FOR PROCESS'
+			); 
+
+			$this->db->where('id', $explode_data[0]);
+			$this->db->update('tbl_undertime', $data);
+		}	
+
+		redirect('reports/index_undertime');
+	}
+
+	public function afp_ut()
+	{
+		foreach($this->input->post('employee') as $ut)
+		{
+			$explode_data = explode('|', $ut);
+			$data_w = date('w', strtotime($explode_data[3]));
+
+			$data = array(
+				'process_by'   => $this->session->userdata('username'),
+				'process_date' => date('Y-m-d h:i:s'),
+				'status'       => 'PROCESSED'
+			);
+
+			$this->db->where('id', $explode_data[0]);
+			$this->db->update('tbl_undertime', $data);
+
+			$data1 = array(
+				'process_by'   => $this->session->userdata('username'),
+				'process_date' => date('Y-m-d h:i:s'),
+				'status'       => 'PROCESSED'
+			);
+
+			$this->db->where('for_id', $explode_data[0]);
+			$this->db->where('employee_number', $explode_data[1]);
+			$this->db->where('type', $explode_data[5]);
+			$this->db->update('tbl_remarks', $data1);
+		}	
+
+		redirect('reports/index_undertime');
+	}
+
+	public function rfa_ot()
+	{
+		foreach($this->input->post('employee') as $ot)
+		{
+			$data_explode = explode("|", $ot);
+
+			$id = $data_explode[0];
+
+			$data = array(
+				'recommended_approv_by'    => $this->session->userdata('username'),
+				'recommended_approv_date'  => date('Y-m-d h:i:s'),
+				'status'         		   => 'FOR APPROVAL'
+			); 
+
+			$this->db->where('id', $id);
+			$this->db->update('tbl_ot', $data);
+		}	
+
+		redirect('reports/index_ot');
+	}
+	
+	//FOR APPROVAL
+	public function fa_ot()
+	{
+		foreach($this->input->post('employee') as $ot)
+		{
+			$data_explode = explode("|", $ot);
+
+			$id = $data_explode[0];
+
+			$data = array(
+				'approved_by'  	 => $this->session->userdata('username'),
+				'approved_date'  => date('Y-m-d h:i:s'),
+				'status'         => 'Recommending for Verification'
+			); 
+
+			$this->db->where('id', $id);
+			$this->db->update('tbl_ot', $data);
+		}	
+
+		redirect('reports/index_ot');
+	}
+
+	public function rfv_ot()
+	{
+		foreach($this->input->post('employee') as $ot)
+		{
+			$data_explode = explode("|", $ot);
+
+			$id = $data_explode[0];
+
+			$data = array(
+				'recommended_verify_by'    => $this->session->userdata('username'),
+				'recommended_verify_date'  => date('Y-m-d h:i:s'),
+				'status'         	       => 'FOR VERIFICATION'
+			); 
+
+			$this->db->where('id', $id);
+			$this->db->update('tbl_ot', $data);
+		}	
+
+		redirect('reports/index_ot');
+	}
+
+	public function fv_ot()
+	{
+		foreach($this->input->post('employee') as $ot)
+		{
+			$data_explode = explode("|", $ot);
+
+			$id = $data_explode[0];
+
+			$data = array(
+				'verified_by'  	 => $this->session->userdata('username'),
+				'verified_date'  => date('Y-m-d h:i:s'),
+				'status'         => 'FOR NOTIFICATION'
+			); 
+
+			$this->db->where('id', $id);
+			$this->db->update('tbl_ot', $data);
+		}	
+
+		redirect('reports/index_ot');
+	}
+
+	public function nb_ot()
+	{
+		foreach($this->input->post('employee') as $ot)
+		{
+			$data_explode = explode("|", $ot);
+
+			$id = $data_explode[0];
+
+			$data = array(
+				'noted_by'  	 => $this->session->userdata('username'),
+				'noted_date'   => date('Y-m-d h:i:s'),
+				'status'       => 'FOR PROCESS'
+			); 
+
+			$this->db->where('id', $id);
+			$this->db->update('tbl_ot', $data);
+		}	
+
+		redirect('reports/index_ot');
+	}
+
+	public function afp_ot()
+	{
+		foreach($this->input->post('employee') as $ot)
+		{
+			$data_explode = explode("|", $ot);
+
+			$id = $data_explode[0];
+
+			$data = array(
+				'process_by'  	 => $this->session->userdata('username'),
+				'process_date'   => date('Y-m-d h:i:s'),
+				'status'         => 'PROCESSED'
+			); 
+
+			$this->db->where('id', $id);
+			$this->db->update('tbl_ot', $data);
+		}	
+
+		redirect('reports/index_ot');
+	}
+
 	public function index_leave_credits()
 	{
 		$data['main_content'] = 'reports/reportgeneration/leave_credits';
 		$data['employees'] = $this->payroll_model->get_employees();
 		$this->load->view('layouts/main', $data);
+	}
+	public function edit_leave_credits($id)
+	{
+		$this->form_validation->set_rules('sl', 'Sick Leave', 'required|trim');
+		$this->form_validation->set_rules('vl', 'Vacation Leave', 'required|trim');
+		$this->form_validation->set_rules('el', 'Emergency Leave', 'required|trim');
+		$this->form_validation->set_rules('bl', 'Bereavement Leave', 'required|trim');
+
+		if($this->form_validation->run() == FALSE)
+		{
+			$data['main_content'] = 'reports/reportgeneration/edit_leave_credit';
+			$data['leave_credit'] = $this->payroll_model->get_leave_credit($id);
+			$this->load->view('layouts/main', $data);
+		}
+		else
+		{
+			if($this->payroll_model->update_leave_credit($id))
+			{
+				$this->session->set_flashdata('edit_msg', 'Leave Credit Successfully Updated!');
+				redirect('reports/index_leave_credits');
+			}
+		}
+
+		
+	}
+
+	public function adjustment()
+	{
+		$this->form_validation->set_rules('name', 'Name', 'required|trim');
+		$this->form_validation->set_rules('type', 'Type', 'required|trim');
+		$this->form_validation->set_rules('adjust_date', 'Adjust Date', 'required|trim');
+		$this->form_validation->set_rules('cutoff_date', 'CutOff Date', 'required|trim');
+		$this->form_validation->set_rules('adjustment', 'Adjustment', 'required|trim');
+		$this->form_validation->set_rules('remarks', 'Remarks', 'required|trim');
+
+		$type = $this->input->post('type');
+
+		$type_explod = explode('|', $type);
+
+		if($this->form_validation->run() == FALSE)
+		{
+			$data['main_content'] = 'reports/adjustment/adj_index';
+			$data['employees'] = $this->payroll_model->get_employees();
+			$this->load->view('layouts/main', $data);
+		}
+		else
+		{
+			if($type_explod[0] == 'VL')
+			{
+				$this->payroll_model->add_adjusment_vl();
+				$this->session->set_flashdata('add_vl', 'ADJUSTMENT VL SUCCESSFULLY ADDED!');
+				redirect('reports/adjustment');
+			}
+			elseif($type_explod[0] == 'SL')
+			{
+				$this->payroll_model->add_adjusment_sl();
+				$this->session->set_flashdata('add_sl', 'ADJUSTMENT SL SUCCESSFULLY ADDED!');
+				redirect('reports/adjustment');
+			}
+			
+			elseif($type_explod[0] == 'AB')
+			{
+				$this->payroll_model->add_adjusment_ab();
+				$this->session->set_flashdata('add_ab', 'ADJUSTMENT AB SUCCESSFULLY ADDED!');
+				redirect('reports/adjustment');
+			}
+			elseif($type_explod[2] == 'OT')
+			{
+				$this->payroll_model->add_adjustment_ot();
+				$this->session->set_flashdata('add_ot', 'ADJUSTMENT OT SUCCESSFULLY ADDED!');
+				redirect('reports/adjustment');
+			}
+			elseif($type_explod[0] == 'UT')
+			{
+				$this->payroll_model->add_adjustment_ut();
+				$this->session->set_flashdata('add_ut', 'ADJUSTMENT UT SUCCESSFULLY ADDED!');
+				redirect('reports/adjustment');
+			}
+		}
+
+		
 	}
 
 }

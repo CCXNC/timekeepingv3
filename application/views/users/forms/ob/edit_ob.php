@@ -40,7 +40,7 @@
 			   		<div class="col-md-5">
 	            <div class="form-group">
 	                <label for="form_name">DATE OF OB</label>
-	                <input id="form_name" type="date" name="date" class="form-control" value="<?php echo $ob->date_ob; ?>">
+	                <input id="form_name" type="date"  readonly="" name="date" class="form-control" value="<?php echo $ob->date_ob; ?>">
 	            </div>
 	          </div>
 			   	</div>	
@@ -51,8 +51,8 @@
 		              <select class="form-control" name="ob_type">
 		              	<option value=" ">SELECT</option>
 		              	<option value="WD"<?php echo $ob->type_ob == "WD" ? 'Selected' : ' '; ?>>WHOLE DAY</option>
-		              	<option value="UD_in"<?php echo $ob->type_ob == "UD_in" ? 'Selected' : ' '; ?>>HALFDAY IN</option>
-		              	<option value="UD_out"<?php echo $ob->type_ob == "UD_out" ? 'Selected' : ' '; ?>>UNDERTIME OUT</option>
+		              	<option value="IN"<?php echo $ob->type_ob == "IN" ? 'Selected' : ' '; ?>>OB (IN) AM</option>
+		              	<option value="OUT"<?php echo $ob->type_ob == "OUT" ? 'Selected' : ' '; ?>>OB (OUT) PM</option>
 		              </select>	
 		          </div>
 		      	</div>    
@@ -83,7 +83,7 @@
 	        <div class="row">
 	          <div class="col-md-5">
 	            <div class="form-group">
-	                <label for="form_name">TIME OF</label>
+	                <label for="form_name">TIME</label>
 	                <input id="form_name" type="time" name="time_of_departure" class="form-control" value="<?php echo $ob->time_in; ?>">
 	            </div>
 	          </div>

@@ -36,13 +36,12 @@
 	    <div class="panel-body">
 	    	<table class="table table-bordered table-hover table-striped">
 	    		<thead>
-	    			<th>Employee No.</th>
-	    			<th>Name</th>
+	    			<th>Employee Name</th>
 	    			<th>Total Tardiness</th>
 	    			<th>No. Tardiness</th>
 	    			<th>Total Absences</th>
 	    			<th>No. Absences</th>
-	    			<th>Total CWWUT</th>
+	    			<!--<th>Total CWWUT</th>-->
 	    			<th>Total UT</th>
 	    			<th>No. UT</th>
 	    			<th>Total ND</th>
@@ -54,7 +53,6 @@
 					<?php if($employees) : ?> 
 						<?php foreach($employees as $emp) : ?>
 							<tr>
-	  						<td><?php echo $emp->emp_no; ?></td>
 	  						<td><?php echo $emp->name; ?></td>
 
 	  						<!-- TARDINESS -->
@@ -151,29 +149,29 @@
 	  						</td>
 
 	  						<!-- TOTAL CWWUT -->
-	  						<td>
-	  							<?php if($cwwuts) : ?>
-		            		<?php foreach($cwwuts as $cwwut) : ?>
-			            		<?php  
-			            			//TOTAL TARDINESS
-				            		if($cwwut->undertime_hr == 0)
-				            		{
-				            			echo ' ';
-				            		} 
-				            		else
-				            		{
-				            			if($cwwut->cwwut_employee_number == $emp->employee_number)
-				            			{
-				            				$hr_diff = intval($cwwut->undertime_hr /60);
-														$min_diff = intval($cwwut->undertime_hr %60);
-														$hrs1 = sprintf("%02d", $min_diff);
-														echo $hr_diff.".".$hrs1."";
-				            			}
-				            		}	
-			            		?>	
-		            		<?php endforeach; ?>	
-		            	<?php endif; ?>	
-	  						</td>
+	  						<!--<td>
+	  							<?php //if($cwwuts) : ?>
+									<?php //foreach($cwwuts as $cwwut) : ?>
+										<?php  
+											//TOTAL TARDINESS
+											/*if($cwwut->undertime_hr == 0)
+											{
+												echo ' ';
+											} 
+											else
+											{
+												if($cwwut->cwwut_employee_number == $emp->employee_number)
+												{
+													$hr_diff = intval($cwwut->undertime_hr /60);
+																$min_diff = intval($cwwut->undertime_hr %60);
+																$hrs1 = sprintf("%02d", $min_diff);
+																echo $hr_diff.".".$hrs1."";
+												}
+											}*/	
+										?>	
+									<?php //endforeach; ?>	
+								<?php //endif; ?>	
+	  						</td>-->
 
 	  						<!-- TOTAL UNDERTIME -->
 	  						<td>

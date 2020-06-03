@@ -28,9 +28,9 @@
     <link href="<?php echo base_url(); ?>/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css">
 
-    <link href="<?php echo base_url(); ?>/assets/css/jquery-ui.css" rel="stylesheet" type="text/css">
-    
-    
+    <link href="<?php echo base_url(); ?>/assets/css/jquery-ui.css" rel="stylesheet" type="text/css">          
+                                                                                                               
+                              
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/bootstrap-theme.min.css') ?>">
 
 </head>
@@ -68,12 +68,19 @@
                          <li>
                             <a href="<?php echo base_url(); ?>index.php/master/index_user"><i class="fa fa-group fa-fw"></i>Users</a>
                         </li>
-                         <li>
+                        <li>
+                            <a href="<?php echo base_url(); ?>index.php/master/index_branches"><i class="fa fa-institution fa-fw"></i>Branches</a>
+                        </li>
+                        <li>
                             <a href="<?php echo base_url(); ?>index.php/master/index_calendar"><i class="fa fa-calendar fa-fw"></i>Calendar</a>
                         </li>
                         <li>
-                            <a href="<?php echo base_url(); ?>reports/index_technical"><i class="fa fa-institution fa-fw"></i>Branches</a>
+                            <a href="<?php echo base_url(); ?>index.php/master/index_schedule"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
                         </li>
+                        <li>
+                            <a href="<?php echo base_url(); ?>index.php/master/index_leave_restriction"><i class="fa fa-cog fa-fw"></i>Leave Restriction</a>
+                        </li>
+                        
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -125,8 +132,11 @@
                         <li>
                             <a href="<?php echo base_url(); ?>index.php/reports/index_leave_credits"><i class="fa fa-archive fa-fw"></i>Leave Credits</a>
                         </li>
-                         <li>
-                            <a href="<?php echo base_url(); ?>index.php/reports/index_adjustment"><i class="fa fa-cog fa-fw"></i>Adjustment</a>
+                        <li>
+                            <a href="<?php echo base_url(); ?>index.php/reports/index_adjustment"><i class="fa fa-cog fa-fw"></i>Delete Upload/CSV</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo base_url(); ?>index.php/reports/adjustment"><i class="fa fa-cog fa-fw"></i>Adjustment</a>
                         </li>
                     </ul>
                 </li>
@@ -179,7 +189,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-user">
                     <li>
-                        <a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        <a href="<?php echo base_url(); ?>index.php/user/change_password"><i class="fa fa-user fa-fw"></i> User Change Password</a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>

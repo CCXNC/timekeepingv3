@@ -34,7 +34,7 @@
 <div class="row">
 	<div class="col-lg-12">
 
-  	<div class="panel panel-default">
+  	<div class="panel panel-primary">
     	<div class="panel-heading">
       	<p>Undertime List</p>
       </div>	
@@ -46,7 +46,7 @@
 				          	<div class="col-md-2">
 						          <div class="form-group">
 						              <label for="form_name">Start Date</label>
-						              <input id="form_name" type="date" name="start_date" class="form-control" value=" <?php echo $cut_off->start_date; ?>">
+						              <input id="form_name" type="date" name="start_date" class="form-control" value="<?php echo $cut_off->start_date; ?>">
 						          </div>
 						        </div>
 						        <div class="col-md-2">
@@ -55,8 +55,24 @@
 						              <input id="form_name" type="date" name="end_date" class="form-control" value="<?php echo $cut_off->end_date; ?>">
 						          </div>
 						        </div>	
+
+								<?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_rfv') == 1 ) : ?>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label for="form_name">Branch</label>
+											<select class="form-control" name="branch_id">
+												<option value="ALL"<?php echo $branch_id == 'ALL' ? 'selected' : ''; ?>>ALL</option>
+												<?php if($branches) : ?>
+													<?php foreach($branches as $branch) : ?>
+														<option  value="<?php echo $branch->id; ?>" <?php echo $branch->id == $branch_id ? 'selected' : ' '; ?> ><?php echo $branch->name; ?></option>
+													<?php endforeach; ?>
+												<?php endif; ?>
+											</select>
+										</div>
+									</div>	
+								<?php endif; ?>	
 						        <br>
-						        <button type="submit" class="btn btn-primary">Load</button>
+						        <button type="submit" class="btn btn-default">Load</button>
 						         <?php if($this->session->userdata('is_rfa') == 1 || $this->session->userdata('is_oichead') == 1 || $this->session->userdata('is_hr') == 1) : ?> 
 						        	<input class="btn btn-success" id="rfa" type="submit" value="RFA">  
 						        <?php endif; ?>	 
@@ -74,7 +90,7 @@
 							      <?php endif; ?>	
 
 						        <?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_gm') == 1) : ?> 
-							        <input class="btn btn-warning" id="nb" type="submit" value="NB">
+							        <input class="btn btn-warning" id="nb" type="submit" value="FN">
 							      <?php endif; ?>	
 						        <?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_cfo') == 1) : ?> 
 							        <input class="btn btn-primary" id="afp" type="submit" value="AFP"> 
@@ -82,7 +98,7 @@
 								  </div> 
 			            <thead>
 		                <tr>
-		                	<th><center><input type="checkbox" id="checkAll" name=""></center></th>
+		                <th><center><input type="checkbox" id="checkAll" name=""></center></th>
 	                    <th>Name</th>
 	                    <th>Date</th>
 	                    <th>Time Out</th>
@@ -106,10 +122,10 @@
 				          				<td><?php echo $undertime->time_out; ?></td>
 				          				<td>
 				          					<?php 
-				          					$hours = floor($undertime->ut_no / 60);
-														$minutes = $undertime->ut_no % 60;
-														$ut_hrs = $hours. '.' .$minutes;
-														echo $ut_hrs;
+												$hours = floor($undertime->ut_no / 60);
+												$minutes = $undertime->ut_no % 60;
+												$ut_hrs = $hours. '.' .$minutes;
+												echo $ut_hrs;
 				          					?>
 				          				</td>
 				          				<td><?php echo $undertime->reason; ?></td>
@@ -117,10 +133,10 @@
 				          				<td>
 				          					<center>
 				          						<?php if($undertime->status != 'PROCESSED') : ?>
-				                    		<?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_rfv')) : ?>
+				                    				<?php if($this->session->userdata('is_hr') == 1 || $this->session->userdata('is_rfv')) : ?>
 				          								<a href="<?php echo base_url(); ?>index.php/reports/edit_undertime/<?php echo $undertime->id; ?>" class="btn-sm btn-primary">Edit</a>
-				          							<?php endif; ?>	
-				          							<a href="<?php echo base_url(); ?>index.php/users/disapproved_undertime/<?php echo $undertime->id; ?>" class="btn-sm btn-danger">Disapproved</a>
+				          							<?php endif; ?>
+				          							<a onclick="return confirm('Do you want to disapproved this employee?');" href="<?php echo base_url(); ?>index.php/users/disapproved_undertime/<?php echo $undertime->id; ?>"  class="btn-sm btn-danger">Disapproved</a>
 				          						<?php endif; ?>
 				          					</center>
 				          				</td>
@@ -128,7 +144,7 @@
 				          		<?php endforeach; ?>	
 				          	<?php endif; ?>	
 			    			</table> 
-	      		</div>
+	      			</div>
 	  			</div>  
         </form>   
      </div>            

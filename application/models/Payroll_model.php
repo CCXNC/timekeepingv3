@@ -1,94 +1,94 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+ 
+class Payroll_model extends CI_Model { 
 
-class Payroll_model extends CI_Model {
-
-	public function get_allAttendance($start_date, $end_date, $branch)
+	public function get_allAttendance($start_date, $end_date, $branch) 
+	{ 
+		$this->db->select(' 
+			tbl_in_attendance.id as id,     
+			tbl_in_attendance.employee_number as employee_number,  
+			tbl_in_attendance.name as name,  
+			tbl_in_attendance.dates as dates,  
+			tbl_in_attendance.times as intime,  
+			tbl_out_attendance.times as outtime,   
+			tbl_in_attendance.status as in_status,   
+			tbl_out_attendance.status as out_status  
+			');  
+		$this->db->from('tbl_in_attendance');  
+		$this->db->where('tbl_in_attendance.dates >=', $start_date);      
+		$this->db->where('tbl_in_attendance.dates <=', $end_date);     
+		$this->db->where('tbl_in_attendance.branch_id', $branch);    
+		$this->db->join('tbl_out_attendance','tbl_in_attendance.id = tbl_out_attendance.in_id');     
+		$this->db->order_by('tbl_in_attendance.employee_number', 'ASC');      
+		$this->db->order_by('tbl_in_attendance.dates', 'ASC');      
+         
+		$query = $this->db->get();   
+		
+		return $query->result();  
+	}
+	public function get_allAttendance1($start_date, $end_date)  
 	{
-		$this->db->select('
+		$this->db->select(' 
+			tbl_in_attendance.id as id, 
+			tbl_in_attendance.employee_number as employee_number,   
+			tbl_in_attendance.name as name, 
+			tbl_in_attendance.dates as dates, 
+			tbl_in_attendance.times as intime, 
+			tbl_out_attendance.times as outtime, 
+			tbl_in_attendance.status as in_status,  
+			tbl_out_attendance.status as out_status   
+			');    
+		$this->db->from('tbl_in_attendance');  
+		$this->db->where('tbl_in_attendance.dates >=', $start_date);   
+		$this->db->where('tbl_in_attendance.dates <=', $end_date);   
+		$this->db->where('tbl_in_attendance.branch_id', 1);   
+		$this->db->join('tbl_out_attendance','tbl_in_attendance.id = tbl_out_attendance.in_id');       
+		$this->db->order_by('tbl_in_attendance.employee_number', 'ASC');   
+		$this->db->order_by('tbl_in_attendance.dates', 'ASC');   
+  
+ 		$query = $this->db->get();  
+                
+		return $query->result();  
+	}
+
+	public function get_allAttendance2($start_date, $end_date)  
+	{ 
+		$this->db->select('  
 			tbl_in_attendance.id as id,  
-			tbl_in_attendance.employee_number as employee_number,
-			tbl_in_attendance.name as name,
-			tbl_in_attendance.dates as dates,
-			tbl_in_attendance.times as intime,
-			tbl_out_attendance.times as outtime,
-			tbl_in_attendance.status as in_status, 
-			tbl_out_attendance.status as out_status
-			');
-		$this->db->from('tbl_in_attendance');
-		$this->db->where('tbl_in_attendance.dates >=', $start_date);
-		$this->db->where('tbl_in_attendance.dates <=', $end_date);
-		$this->db->where('tbl_in_attendance.branch_id', $branch);
-		$this->db->join('tbl_out_attendance','tbl_in_attendance.id = tbl_out_attendance.in_id');
-		$this->db->order_by('tbl_in_attendance.employee_number', 'ASC');
-		$this->db->order_by('tbl_in_attendance.dates', 'ASC');
-
- 		$query = $this->db->get();
-
-		return $query->result();
-	}
-	public function get_allAttendance1($start_date, $end_date)
-	{
-		$this->db->select('
-			tbl_in_attendance.id as id,
-			tbl_in_attendance.employee_number as employee_number,
-			tbl_in_attendance.name as name,
-			tbl_in_attendance.dates as dates,
-			tbl_in_attendance.times as intime,
-			tbl_out_attendance.times as outtime,
-			tbl_in_attendance.status as in_status, 
-			tbl_out_attendance.status as out_status
-			');
-		$this->db->from('tbl_in_attendance');
-		$this->db->where('tbl_in_attendance.dates >=', $start_date);
-		$this->db->where('tbl_in_attendance.dates <=', $end_date);
-		$this->db->where('tbl_in_attendance.branch_id', 1);
-		$this->db->join('tbl_out_attendance','tbl_in_attendance.id = tbl_out_attendance.in_id');
-		$this->db->order_by('tbl_in_attendance.employee_number', 'ASC');
-		$this->db->order_by('tbl_in_attendance.dates', 'ASC');
+			tbl_in_attendance.employee_number as employee_number,  
+			tbl_in_attendance.name as name, 
+			tbl_in_attendance.dates as dates, 
+			tbl_in_attendance.times as intime, 
+			tbl_out_attendance.times as outtime, 
+			tbl_in_attendance.status as in_status,  
+			tbl_out_attendance.status as out_status 
+			'); 
+		$this->db->from('tbl_in_attendance'); 
+		$this->db->where('tbl_in_attendance.dates >=', $start_date); 
+		$this->db->where('tbl_in_attendance.dates <=', $end_date);  
+		$this->db->where('tbl_in_attendance.branch_id', 2);  
+		$this->db->join('tbl_out_attendance','tbl_in_attendance.id = tbl_out_attendance.in_id');  
+		$this->db->order_by('tbl_in_attendance.employee_number', 'ASC');  
+		$this->db->order_by('tbl_in_attendance.dates', 'ASC');      
 
  		$query = $this->db->get();
 
 		return $query->result();
 	}
 
-	public function get_allAttendance2($start_date, $end_date)
+	public function get_allAttendance3($start_date, $end_date) 
 	{
-		$this->db->select('
-			tbl_in_attendance.id as id,
-			tbl_in_attendance.employee_number as employee_number,
-			tbl_in_attendance.name as name,
-			tbl_in_attendance.dates as dates,
-			tbl_in_attendance.times as intime,
-			tbl_out_attendance.times as outtime,
-			tbl_in_attendance.status as in_status, 
-			tbl_out_attendance.status as out_status
-			');
-		$this->db->from('tbl_in_attendance');
-		$this->db->where('tbl_in_attendance.dates >=', $start_date);
-		$this->db->where('tbl_in_attendance.dates <=', $end_date);
-		$this->db->where('tbl_in_attendance.branch_id', 2);
-		$this->db->join('tbl_out_attendance','tbl_in_attendance.id = tbl_out_attendance.in_id');
-		$this->db->order_by('tbl_in_attendance.employee_number', 'ASC');
-		$this->db->order_by('tbl_in_attendance.dates', 'ASC');
-
- 		$query = $this->db->get();
-
-		return $query->result();
-	}
-
-	public function get_allAttendance3($start_date, $end_date)
-	{
-		$this->db->select('
-			tbl_in_attendance.id as id,
-			tbl_in_attendance.employee_number as employee_number,
-			tbl_in_attendance.name as name,
-			tbl_in_attendance.dates as dates,
-			tbl_in_attendance.times as intime,
-			tbl_out_attendance.times as outtime,
-			tbl_in_attendance.status as in_status, 
-			tbl_out_attendance.status as out_status
-			');
+		$this->db->select(' 
+			tbl_in_attendance.id as id, 
+			tbl_in_attendance.employee_number as employee_number, 
+			tbl_in_attendance.name as name, 
+			tbl_in_attendance.dates as dates, 
+			tbl_in_attendance.times as intime, 
+			tbl_out_attendance.times as outtime, 
+			tbl_in_attendance.status as in_status,  
+			tbl_out_attendance.status as out_status 
+			'); 
 		$this->db->from('tbl_in_attendance');
 		$this->db->where('tbl_in_attendance.dates >=', $start_date);
 		$this->db->where('tbl_in_attendance.dates <=', $end_date);
@@ -770,6 +770,7 @@ class Payroll_model extends CI_Model {
 
 	public function get_ot($employee_no, $start_date, $end_date)
 	{
+		
 		$this->db->select('
 			tbl_ot.id as id, 
 			tbl_ot.employee_number as employee_number, 
@@ -795,198 +796,349 @@ class Payroll_model extends CI_Model {
 		$this->db->where('tbl_ot.date_ot <=', $end_date);
 		$query = $this->db->get();
 
+
+		$this->db->select('daily_in,daily_out,daily_friday_out,casual_in,casual_out,casual_friday_out');
+		$this->db->order_by('id','DESC');
+		$query1 = $this->db->get('tbl_schedules');
+		// REGULAR EMPLOYEE TIME IN AND OUT
+		$daily_in = $query1->row()->daily_in; 
+		$daily_out  = $query1->row()->daily_out;
+		$daily_friday_out = $query1->row()->daily_friday_out;
+		//CASUAL TIME IN AND OUT
+		$casual_in = $query1->row()->casual_in;
+		$casual_out = $query1->row()->casual_out;
+		$casual_friday_out = $query1->row()->casual_friday_out;
+
+		//REGULAR EMPLOYEE CONVERT TO MINS TIME IN AND OUT
+		$explod_in = explode(':', $daily_in);
+		$daily_in_mins = $explod_in[0] * 60;
+
+		$explod_out = explode(':', $daily_out);
+		$daily_out_mins = $explod_out[0] * 60;
+
+		$explode_fri_out = explode(':', $daily_friday_out);
+		$daily_friday_out_mins = $explode_fri_out[0] * 60;
+
+		//CASUAL CONVERT TO MINS TIME IN AND OUT
+		$explod_casual_in = explode(':', $casual_in);
+		$casual_daily_in_mins = $explod_casual_in[0] * 60;
+
+		$explod_casual_out = explode(':', $casual_out);
+		$casual_out_mins = $explod_casual_out[0] * 60;
+
+		$explod_casual_friday_out = explode(':', $casual_friday_out);
+		$casual_friday_out_mins = $explod_casual_friday_out[0] * 60;
+
 		foreach ($query->result() as $ot) 
 		{
-			$fixed_in = 450;
+			$fixed_in = $daily_in_mins;
 			$halfday = 750;
-			$fixed_out = 1050;
-			$friday_out = 990;
+			$fixed_out = $daily_out_mins;
+			$friday_out = $daily_friday_out_mins;
+
+			$casual_in = $casual_daily_in_mins;
+			$casual_out = $casual_out_mins;
+			$casual_friday_out = $casual_friday_out_mins;
+
 			$weekdate = date('w', strtotime($ot->date_ot)); 
 
-			//BIO TIME IN
-			$explod_date_time = explode(' ', $ot->employee_in); 
-			$employee_in = explode(':', $explod_date_time[1]);
-			$total_in = intval($employee_in[0]*60) + $employee_in[1];
-			//echo $total_in . ' | ' ;
-
-			//BIO TIME OUT
-			$explod_date_time1 = explode(' ', $ot->employee_out); 
-			$employee_out = explode(':', $explod_date_time1[1]);
-			$total_out = intval($employee_out[0]*60) + $employee_out[1];
-			//echo $total_out . ' | ' ;
-			//echo '<br>';
-
-			//OT FILE TIME IN
-			$ot_time_in = explode(':', $ot->time_in);
-			$ot_total_in = intval($ot_time_in[0]*60) + $ot_time_in[1];
-			//echo $ot_total_in . ' | ' ;
-
-			//OT FILE TIME IN
-			$ot_time_out = explode(':', $ot->time_out);
-			$ot_total_out = intval($ot_time_out[0]*60) + $ot_time_out[1];
-			//echo $ot_total_out . ' | ' ;
-
-			// computation of time in overtime
-
-			if($weekdate <= 4 && $weekdate != 0)
+			if($ot->employee_in == NULL && $ot->employee_out == NULL)
 			{
-				if($total_out > $halfday)
-				{
-					$whole_day_ot = $total_out - $total_in - 60;
-				}
-				else
-				{
-					$whole_day_ot = $total_out - $total_in;
-				}
-				$ot_hrs= $ot->total_ot;
-				$actual_ot_hrs_night = $total_out - $fixed_out + 1;
-				$actual_ot_hrs_morning = $fixed_in - $total_in + 1;
-				/*echo  ' ID ' . $ot->id . ' OT HRS: ' . $ot_hrs . ' OT NIGHT: ' . $actual_ot_hrs_night . ' OT MORNING: ' . $actual_ot_hrs_morning . ' OT WHOLEDAY: ' . $whole_day_ot;
-				echo '<br>';*/
-				if($actual_ot_hrs_morning >= $ot_hrs && $ot->ot_type == 'ROT')
-				{
-					/*echo $weekdate . ' | ' . $ot->employee_number . ' OT MORNING';
-					echo '<br>';*/
-					$ot->red_mark_alert = 0;
-				}
-				elseif($actual_ot_hrs_night >= $ot_hrs && $ot->ot_type == 'ROT')
-				{
-					/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT NIGHT';
-					echo '<br>';*/
-					$ot->red_mark_alert = 0;
-				}
-				elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'SHOT')
-				{
-					/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
-					echo '<br>';*/
-					$ot->red_mark_alert = 0;
-				}
-				elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'LHOT')
-				{
-					/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
-					echo '<br>';*/
-					$ot->red_mark_alert = 0;
-				}
-				else
-				{
-					/*echo 'RED MARK ALERT!';
-					echo '<br>';*/
-					$ot->red_mark_alert = 1;
-				}
+				$employee_in = '';
+				$employee_out = '';
+				$total_in = '';
+				$total_out = '';
+				$ot->red_mark_alert = 1;
 			}
-			elseif($weekdate == 5)
+			else
 			{
-				if($total_out > $halfday)
-				{
-					$whole_day_ot = $total_out - $total_in - 60;
-				}
-				else
-				{
-					$whole_day_ot = $total_out - $total_in;
-				}
-				$ot_hrs= $ot->total_ot;
-				$actual_ot_hrs_night = $total_out - $friday_out + 1;
-				$actual_ot_hrs_morning = $fixed_in - $total_in + 1;
-				/*echo ' ID ' . $ot->id . ' OT HRS: ' . $ot_hrs . ' OT NIGHT: ' . $actual_ot_hrs_night . ' OT MORNING: ' . $actual_ot_hrs_morning . ' OT WHOLEDAY: ' . $whole_day_ot;
-				echo '<br>';*/
-				if($actual_ot_hrs_morning >= $ot_hrs && $ot->ot_type == 'ROT')
-				{
-					/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT MORNING';
-					echo '<br>';*/
-					$ot->red_mark_alert = 0;
-				}
-				elseif($actual_ot_hrs_night >= $ot_hrs && $ot->ot_type == 'ROT')
-				{
-					/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT NIGHT';
-					echo '<br>';*/
-					$ot->red_mark_alert = 0;
-				}
-				elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'SHOT')
-				{
-					/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
-					echo '<br>';*/
-					$ot->red_mark_alert = 0;
-				}
-				elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'LHOT')
-				{
-					/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
-					echo '<br>';*/
-					$ot->red_mark_alert = 0;
-				}
-				else
-				{
-					/*echo 'RED MARK ALERT!';
-					echo '<br>';*/
-					$ot->red_mark_alert = 1;
-				}
-			}
-			elseif($weekdate == 6)
-			{
-				if($total_out > $halfday)
-				{
-					$whole_day_ot = $total_out - $total_in - 60;
-				}
-				else
-				{
-					$whole_day_ot = $total_out - $total_in;
-				}
-				$ot_hrs= $ot->total_ot;
-				/*echo ' ID ' . $ot->id . ' OT HRS: ' . $ot_hrs .  ' OT WHOLEDAY: ' . $whole_day_ot;
-				echo '<br>';*/
-				if($whole_day_ot >= $ot_hrs && $ot->ot_type == 'ROT')
-				{
-					/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
-					echo '<br>';*/
-					$ot->red_mark_alert = 0;
-				}
-				elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'SHOT')
-				{
-					/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
-					echo '<br>';*/
-					$ot->red_mark_alert = 0;
-				}
-				elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'LHOT')
-				{
-					/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
-					echo '<br>';*/
-					$ot->red_mark_alert = 0;
-				}
-				else
-				{
-					/*echo 'RED MARK ALERT!';
-					echo '<br>';*/
-					$ot->red_mark_alert = 1;
-				}
-			}
-			elseif($weekdate == 0)
-			{
-				if($total_out > $halfday)
-				{
-					$whole_day_ot = $total_out - $total_in - 60;
-				}
-				else
-				{
-					$whole_day_ot = $total_out - $total_in;
-				}
-				$ot_hrs = $ot->total_ot;
-				/*echo ' ID ' . $ot->id . ' OT HRS: ' . $ot_hrs .  ' OT WHOLEDAY: ' . $whole_day_ot;
-				echo '<br>';*/
-				if($whole_day_ot >= $ot_hrs && $ot->ot_type == 'RDOT')
-				{
-					/*echo  $weekdate . ' | ' . $ot->employee_number . 'RD OT WHOLE DAY';
-					echo '<br>';*/
-					$ot->red_mark_alert = 0;
-				}
-				else
-				{
-					/*echo 'RED MARK ALERT!';
-					echo '<br>';*/
-					$ot->red_mark_alert = 1;
-				}
-			}
+				//BIO TIME IN
+				$explod_date_time = explode(' ', $ot->employee_in); 
+				$employee_in = explode(':', $explod_date_time[1]);
+				$total_in = intval($employee_in[0]*60) + $employee_in[1];
+				//echo $total_in . ' | ' ;
 
+				//BIO TIME OUT
+				$explod_date_time1 = explode(' ', $ot->employee_out); 
+				$employee_out = explode(':', $explod_date_time1[1]);
+				$total_out = intval($employee_out[0]*60) + $employee_out[1];
+				//echo $total_out . ' | ' ;
+				//echo '<br>';
+
+				//OT FILE TIME IN
+				$ot_time_in = explode(':', $ot->time_in);
+				$ot_total_in = intval($ot_time_in[0]*60) + $ot_time_in[1];
+				//echo $ot_total_in . ' | ' ;
+
+				//OT FILE TIME OUT
+				$ot_time_out = explode(':', $ot->time_out);
+				$ot_total_out = intval($ot_time_out[0]*60) + $ot_time_out[1];
+				//echo $ot_total_out . ' | ' ;
+
+				// computation of time in overtime
+
+				if($weekdate <= 4 && $weekdate != 0)
+				{
+					if($ot->employee_number == 10195)
+					{
+						if($total_out > $halfday)
+						{
+							$whole_day_ot = $total_out - $total_in - 60;
+						}
+						else
+						{
+							$whole_day_ot = $total_out - $total_in;
+						}
+						$ot_hrs= $ot->total_ot;
+						$actual_ot_hrs_night = $total_out - $casual_out + 1;
+						$actual_ot_hrs_morning = $casual_in - $total_in + 1;
+						/*echo  ' ID ' . $ot->id . ' OT HRS: ' . $ot_hrs . ' OT NIGHT: ' . $actual_ot_hrs_night . ' OT MORNING: ' . $actual_ot_hrs_morning . ' OT WHOLEDAY: ' . $whole_day_ot;
+						echo '<br>';*/
+						if($actual_ot_hrs_morning >= $ot_hrs && $ot->ot_type == 'ROT')
+						{
+							/*echo $weekdate . ' | ' . $ot->employee_number . ' OT MORNING';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						elseif($actual_ot_hrs_night >= $ot_hrs && $ot->ot_type == 'ROT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT NIGHT';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'SHOT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'LHOT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						else
+						{
+							/*echo 'RED MARK ALERT!';
+							echo '<br>';*/
+							$ot->red_mark_alert = 1;
+						}
+					}
+
+					else
+					{
+						if($total_out > $halfday)
+						{
+							$whole_day_ot = $total_out - $total_in - 60;
+						}
+						else
+						{
+							$whole_day_ot = $total_out - $total_in;
+						}
+						$ot_hrs= $ot->total_ot;
+						$actual_ot_hrs_night = $total_out - $fixed_out + 1;
+						$actual_ot_hrs_morning = $fixed_in - $total_in + 1;
+						/*echo  ' ID ' . $ot->id . ' OT HRS: ' . $ot_hrs . ' OT NIGHT: ' . $actual_ot_hrs_night . ' OT MORNING: ' . $actual_ot_hrs_morning . ' OT WHOLEDAY: ' . $whole_day_ot;
+						echo '<br>';*/
+						if($actual_ot_hrs_morning >= $ot_hrs && $ot->ot_type == 'ROT')
+						{
+							/*echo $weekdate . ' | ' . $ot->employee_number . ' OT MORNING';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						elseif($actual_ot_hrs_night >= $ot_hrs && $ot->ot_type == 'ROT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT NIGHT';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'SHOT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'LHOT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						else
+						{
+							/*echo 'RED MARK ALERT!';
+							echo '<br>';*/
+							$ot->red_mark_alert = 1;
+						}
+
+					}
+					
+				}
+				elseif($weekdate == 5)
+				{
+					if($ot->employee_number == 10195)
+					{
+						if($total_out > $halfday)
+						{
+							$whole_day_ot = $total_out - $total_in - 60;
+						}
+						else
+						{
+							$whole_day_ot = $total_out - $total_in;
+						}
+						$ot_hrs= $ot->total_ot;
+						$actual_ot_hrs_night = $total_out - $casual_friday_out + 1;
+						$actual_ot_hrs_morning = $casual_in - $total_in + 1;
+						/*echo ' ID ' . $ot->id . ' OT HRS: ' . $ot_hrs . ' OT NIGHT: ' . $actual_ot_hrs_night . ' OT MORNING: ' . $actual_ot_hrs_morning . ' OT WHOLEDAY: ' . $whole_day_ot;
+						echo '<br>';*/
+						if($actual_ot_hrs_morning >= $ot_hrs && $ot->ot_type == 'ROT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT MORNING';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						elseif($actual_ot_hrs_night >= $ot_hrs && $ot->ot_type == 'ROT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT NIGHT';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'SHOT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'LHOT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						else
+						{
+							/*echo 'RED MARK ALERT!';
+							echo '<br>';*/
+							$ot->red_mark_alert = 1;
+						}
+					}
+
+					else 
+					{
+						if($total_out > $halfday)
+						{
+							$whole_day_ot = $total_out - $total_in - 60;
+						}
+						else
+						{
+							$whole_day_ot = $total_out - $total_in;
+						}
+						$ot_hrs= $ot->total_ot;
+						$actual_ot_hrs_night = $total_out - $friday_out + 1;
+						$actual_ot_hrs_morning = $fixed_in - $total_in + 1;
+						/*echo ' ID ' . $ot->id . ' OT HRS: ' . $ot_hrs . ' OT NIGHT: ' . $actual_ot_hrs_night . ' OT MORNING: ' . $actual_ot_hrs_morning . ' OT WHOLEDAY: ' . $whole_day_ot;
+						echo '<br>';*/
+						if($actual_ot_hrs_morning >= $ot_hrs && $ot->ot_type == 'ROT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT MORNING';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						elseif($actual_ot_hrs_night >= $ot_hrs && $ot->ot_type == 'ROT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT NIGHT';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'SHOT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'LHOT')
+						{
+							/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
+							echo '<br>';*/
+							$ot->red_mark_alert = 0;
+						}
+						else
+						{
+							/*echo 'RED MARK ALERT!';
+							echo '<br>';*/
+							$ot->red_mark_alert = 1;
+						}	
+					}
+
+				}
+				elseif($weekdate == 6)
+				{
+					if($total_out > $halfday)
+					{
+						$whole_day_ot = $total_out - $total_in - 60;
+					}
+					else
+					{
+						$whole_day_ot = $total_out - $total_in;
+					}
+					$ot_hrs= $ot->total_ot;
+					/*echo ' ID ' . $ot->id . ' OT HRS: ' . $ot_hrs .  ' OT WHOLEDAY: ' . $whole_day_ot;
+					echo '<br>';*/
+					if($whole_day_ot >= $ot_hrs && $ot->ot_type == 'ROT')
+					{
+						/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
+						echo '<br>';*/
+						$ot->red_mark_alert = 0;
+					}
+					elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'SHOT')
+					{
+						/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
+						echo '<br>';*/
+						$ot->red_mark_alert = 0;
+					}
+					elseif($whole_day_ot >= $ot_hrs && $ot->ot_type == 'LHOT')
+					{
+						/*echo  $weekdate . ' | ' . $ot->employee_number . ' OT WHOLE DAY';
+						echo '<br>';*/
+						$ot->red_mark_alert = 0;
+					}
+					else
+					{
+						/*echo 'RED MARK ALERT!';
+						echo '<br>';*/
+						$ot->red_mark_alert = 1;
+					}
+				}
+				elseif($weekdate == 0)
+				{
+					if($total_out > $halfday)
+					{
+						$whole_day_ot = $total_out - $total_in - 60;
+					}
+					else 
+					{
+						$whole_day_ot = $total_out - $total_in;
+					}
+					$ot_hrs = $ot->total_ot;
+					/*echo ' ID ' . $ot->id . ' OT HRS: ' . $ot_hrs .  ' OT WHOLEDAY: ' . $whole_day_ot;
+					echo '<br>';*/
+					if($whole_day_ot >= $ot_hrs && $ot->ot_type == 'RDOT')
+					{
+						/*echo  $weekdate . ' | ' . $ot->employee_number . 'RD OT WHOLE DAY';
+						echo '<br>';*/
+						$ot->red_mark_alert = 0;
+					}
+					else
+					{
+						/*echo 'RED MARK ALERT!';
+						echo '<br>';*/
+						$ot->red_mark_alert = 1;
+					}
+				}
+			}	
 		}
-
+		
 		return $query->result();
 	}
 
@@ -1078,7 +1230,25 @@ class Payroll_model extends CI_Model {
 			}
 		}
 
-		if($limitdays <= 1 && $date_ot >= $crrntDate)
+		$limitdays1 = 0;
+		for($k = 1; $k <= $numberDays; $k++)
+		{
+			$conv_date = strtotime($date_ot);
+			$cur_date = date('Y-m-d', strtotime('+' . $k .' days', $conv_date));
+			$w_date = date('w', strtotime($cur_date));
+
+			if($w_date != 6 && $w_date != 0)
+			{
+				$limitdays1++;
+			}
+		} 
+
+		$this->db->select('id,rec_ot,');
+		$this->db->order_by('id','DESC');
+		$query = $this->db->get('leave_restriction');
+		$rec_ot = $query->row()->rec_ot;
+		
+		if($limitdays1 <= $rec_ot && $date_ot <= $crrntDate || $limitdays >= 0 && $date_ot >= $crrntDate)
 		{
 			if($is_rfa != 0 || $is_fa != 0 || $is_verify != 0)
 	 		{
@@ -1151,7 +1321,20 @@ class Payroll_model extends CI_Model {
 				$total_min_diff = intval($total_ot_out_min - $total_ot_in_min);
 				$hr_diff = intval($total_min_diff/60);
 				$min_diff = intval($total_min_diff%60);
-				$ot_num = $total_min_diff;
+				//$ot_num = $total_min_diff;
+
+				if($min_diff >= 30)
+				{
+					$min_diff1 = 30;
+					$hr_diff1 = $hr_diff * 60;
+					$total_mins_diff = $min_diff1 + $hr_diff1;
+					$ot_num = $total_mins_diff;
+				}
+				elseif($min_diff < 30)
+				{
+					$hr_diff1 = $hr_diff * 60;
+					$ot_num = $hr_diff1;
+				}
 
 				$data = array(
 					'ot_num' => $ot_num
@@ -1165,7 +1348,20 @@ class Payroll_model extends CI_Model {
 				$total_min_diff = intval($total_ot_out_min - $total_ot_in_min - 60);
 				$hr_diff = intval($total_min_diff/60);
 				$min_diff = intval($total_min_diff%60);
-				$ot_num = $total_min_diff;
+				//$ot_num = $total_min_diff;
+
+				if($min_diff >= 30)
+				{
+					$min_diff1 = 30;
+					$hr_diff1 = $hr_diff * 60;
+					$total_mins_diff = $min_diff1 + $hr_diff1;
+					$ot_num = $total_mins_diff;
+				}
+				elseif($min_diff < 30)
+				{
+					$hr_diff1 = $hr_diff * 60;
+					$ot_num = $hr_diff1;
+				}
 
 				$data = array(
 					'ot_num' => $ot_num
@@ -1180,7 +1376,20 @@ class Payroll_model extends CI_Model {
 			$total_min_diff = intval($total_ot_out_min - $total_ot_in_min);
 			$hr_diff = intval($total_min_diff/60);
 			$min_diff = intval($total_min_diff%60);
-			$ot_num = $total_min_diff;
+			//$ot_num = $total_min_diff;
+			
+			if($min_diff >= 30)
+			{
+				$min_diff1 = 30;
+				$hr_diff1 = $hr_diff * 60;
+				$total_mins_diff = $min_diff1 + $hr_diff1;
+				$ot_num = $total_mins_diff;
+			}
+			elseif($min_diff < 30)
+			{
+				$hr_diff1 = $hr_diff * 60;
+				$ot_num = $hr_diff1;
+			}
 
 			$data = array(
 				'ot_num' => $ot_num
@@ -1194,11 +1403,155 @@ class Payroll_model extends CI_Model {
 		return $trans;
 
 		}
+	
+	}
+
+	public function add_ot_by_hr()
+	{
+		$this->db->trans_start();
+
+		$ot_type = $this->input->post('ot_type');
+		$date_ot = $this->input->post('date');
+		$explode_ot = explode("|", $ot_type);
+		$name = $this->input->post('name');
+		$is_fa = $this->session->userdata('is_fa');
+		$is_hr = $this->session->userdata('is_hr');
+		$is_rfa = $this->session->userdata('is_rfa');
+		$is_verify = $this->session->userdata('is_verify');
+		$is_oichead = $this->session->userdata('is_oichead');
+		$is_noted = $this->session->userdata('is_noted');
+
+		$explod_name = explode("|", $name);
+
+		$data = array(
+			'employee_number' => $explod_name[1],
+			'name'            => $explod_name[0],
+			'date_ot'         => $this->input->post('date'),
+			'ot_type'         => $explode_ot[0],
+			'ot_type_name'    => $explode_ot[1],
+			'time_in'         => $this->input->post('time_in'),
+			'time_out'        => $this->input->post('time_out'),
+			'nature_of_work'  => $this->input->post('nature_of_work'),
+			'status'          => 'Recommending for Verification',
+			'branch_id'       => $this->session->userdata('branch_id'),
+			'department_id'   => $this->session->userdata('department_id'),
+			'encode_by'       => $this->session->userdata('username'),
+			'encode_date'     => date('Y-m-d H:i:s')
+		);
+
+		$query = $this->db->insert('tbl_ot', $data);
+	
+		$this->db->select('id,ot_type,date_ot,time_in,time_out');
+		$this->db->order_by('id','DESC');
+		$this->db->from('tbl_ot');
+		$query = $this->db->get();
+		$id = $query->row()->id;
+		$ot_type = $query->row()->ot_type;
+		$timein = $query->row()->time_in;
+		$timeout = $query->row()->time_out;
+		$date_ot = $query->row()->date_ot;
+
+		$convert_date_ot = date('w', strtotime($date_ot));
+		$in_ot = explode(':', $timein);
+ 		$hr_in_ot = $in_ot[0];
+ 		$min_in_ot = $in_ot[1];
+
+ 		$out_ot = explode(':', $timeout);
+ 		$hr_out_ot = $out_ot[0];
+ 		$min_out_ot = $out_ot[1];
+
+ 		$total_ot_in_min = intval($hr_in_ot*60) + $min_in_ot; 
+		$total_ot_out_min = intval($hr_out_ot*60) + $min_out_ot; 
+		$halfday_start = 721;
+		$halfday_end = 750;
+		if($convert_date_ot == 6 || $convert_date_ot == 0 || $ot_type == 'LHOT' || $ot_type == 'SHOT')
+		{
+			if($halfday_start > $total_ot_out_min || $halfday_start < $total_ot_in_min)
+			{
+				$total_min_diff = intval($total_ot_out_min - $total_ot_in_min);
+				$hr_diff = intval($total_min_diff/60);
+				$min_diff = intval($total_min_diff%60);
+				//$ot_num = $total_min_diff;
+
+				if($min_diff >= 30)
+				{
+					$min_diff1 = 30;
+					$hr_diff1 = $hr_diff * 60;
+					$total_mins_diff = $min_diff1 + $hr_diff1;
+					$ot_num = $total_mins_diff;
+				}
+				elseif($min_diff < 30)
+				{
+					$hr_diff1 = $hr_diff * 60;
+					$ot_num = $hr_diff1;
+				}
+
+				$data = array(
+					'ot_num' => $ot_num
+				);
+
+				$this->db->where('id', $id);
+				$this->db->update('tbl_ot', $data);
+			}
+			else
+			{
+				$total_min_diff = intval($total_ot_out_min - $total_ot_in_min - 60);
+				$hr_diff = intval($total_min_diff/60);
+				$min_diff = intval($total_min_diff%60);
+				//$ot_num = $total_min_diff;
+
+				if($min_diff >= 30)
+				{
+					$min_diff1 = 30;
+					$hr_diff1 = $hr_diff * 60;
+					$total_mins_diff = $min_diff1 + $hr_diff1;
+					$ot_num = $total_mins_diff;
+				}
+				elseif($min_diff < 30)
+				{
+					$hr_diff1 = $hr_diff * 60;
+					$ot_num = $hr_diff1;
+				}
+
+				$data = array(
+					'ot_num' => $ot_num
+				);
+
+				$this->db->where('id', $id);
+				$this->db->update('tbl_ot', $data);
+			}
+		}
 		else
 		{
-			return FALSE;
+			$total_min_diff = intval($total_ot_out_min - $total_ot_in_min);
+			$hr_diff = intval($total_min_diff/60);
+			$min_diff = intval($total_min_diff%60);
+			//$ot_num = $total_min_diff;
+			
+			if($min_diff >= 30)
+			{
+				$min_diff1 = 30;
+				$hr_diff1 = $hr_diff * 60;
+				$total_mins_diff = $min_diff1 + $hr_diff1;
+				$ot_num = $total_mins_diff;
+			}
+			elseif($min_diff < 30)
+			{
+				$hr_diff1 = $hr_diff * 60;
+				$ot_num = $hr_diff1;
+			}
+
+			$data = array(
+				'ot_num' => $ot_num
+			);
+
+			$this->db->where('id', $id);
+			$this->db->update('tbl_ot', $data);
+
 		}
 		
+		$trans = $this->db->trans_complete();
+		return $trans;
 	
 	}
 
@@ -1231,14 +1584,41 @@ class Payroll_model extends CI_Model {
 				$total_min_diff = intval($total_ot_out_min - $total_ot_in_min);
 				$hr_diff = intval($total_min_diff/60);
 				$min_diff = intval($total_min_diff%60);
-				$ot_num = $total_min_diff;
+				//$ot_num = $total_min_diff;
+
+				if($min_diff >= 30)
+				{
+					$min_diff1 = 30;
+					$hr_diff1 = $hr_diff * 60;
+					$total_mins_diff = $min_diff1 + $hr_diff1;
+					$ot_num = $total_mins_diff;
+				}
+				elseif($min_diff < 30)
+				{
+					$hr_diff1 = $hr_diff * 60;
+					$ot_num = $hr_diff1;
+				}
 			}
 			else
 			{
 				$total_min_diff = intval($total_ot_out_min - $total_ot_in_min - 60);
 				$hr_diff = intval($total_min_diff/60);
 				$min_diff = intval($total_min_diff%60);
-				$ot_num = $total_min_diff;
+				//$ot_num = $total_min_diff;
+				
+				if($min_diff >= 30)
+				{
+					$min_diff1 = 30;
+					$hr_diff1 = $hr_diff * 60;
+					$total_mins_diff = $min_diff1 + $hr_diff1;
+					$ot_num = $total_mins_diff;
+				}
+				elseif($min_diff < 30)
+				{
+					$hr_diff1 = $hr_diff * 60;
+					$ot_num = $hr_diff1;
+				}
+
 			}
 		}
 		else
@@ -1247,6 +1627,19 @@ class Payroll_model extends CI_Model {
 			$hr_diff = intval($total_min_diff/60);
 			$min_diff = intval($total_min_diff%60);
 			$ot_num = $total_min_diff;
+
+			if($min_diff >= 30)
+			{
+				$min_diff1 = 30;
+				$hr_diff1 = $hr_diff * 60;
+				$total_mins_diff = $min_diff1 + $hr_diff1;
+				$ot_num = $total_mins_diff;
+			}
+			elseif($min_diff < 30)
+			{
+				$hr_diff1 = $hr_diff * 60;
+				$ot_num = $hr_diff1;
+			}
 		}
 		
 		$data = array(
@@ -1298,7 +1691,8 @@ class Payroll_model extends CI_Model {
 			leave_credits.sl_credit as sl_credit,
 			leave_credits.vl_credit as vl_credit,
 			leave_credits.elcl_credit as elcl_credit,
-			leave_credits.fl_credit as fl_credit
+			leave_credits.fl_credit as fl_credit,
+			leave_credits.absences as absences
 			');
 		$this->db->from('leave_credits');
 		$this->db->where('leave_credits.employee_number', $employee_no);
@@ -1307,7 +1701,7 @@ class Payroll_model extends CI_Model {
 		return $query->row();
 	}
 
-	public function employee_type($employee_no)
+	public function employee_type($employee_no) 
 	{	
 		$this->db->select('type, branch_id');
 		$this->db->where('employee_number', $employee_no);
@@ -1346,9 +1740,9 @@ class Payroll_model extends CI_Model {
 		$this->db->trans_start();
 
 		$hf = $this->input->post('HF');
-		$slvl_type = $this->input->post('slvl_type');
+		$slvl_type  = $this->input->post('slvl_type');
 		$start_date = date('Y-m-d', strtotime($this->input->post('start_date')));
-		$end_date = date('Y-m-d', strtotime($this->input->post('start_date')));
+		$end_date   = date('Y-m-d', strtotime($this->input->post('start_date')));
 		$name = $this->input->post('name');
  
 		$explod_name = explode("|", $name);
@@ -1357,7 +1751,7 @@ class Payroll_model extends CI_Model {
 		$data = array(
 			'employee_number'      => $explod_name[1],
 			'name'                 => $explod_name[0],
-			'date'								 => $start_date,
+			'date'				   => $start_date,
 			'effective_date_start' => $start_date,
 			'effective_date_end'   => $end_date,
 			'type'                 => $explode_type[0],
@@ -1366,31 +1760,31 @@ class Payroll_model extends CI_Model {
 			'reason'               => $this->input->post('reason'),
 			'encode_by'            => $this->session->userdata('username'),
 			'encode_date'          => date('Y-m-d h:i:s'),
-			'branch_id'            =>	$explod_name[2],
+			'branch_id'            => $explod_name[2],
 			'department_id'        => $explod_name[3],
-			'status'               => 'Recommending for Verify'
+			'status'               => 'Recommending for Verification'
 		);
-
+    
 		$this->db->insert('tbl_slvl', $data);
 
 		$this->db->select('id,effective_date_start, effective_date_end');
 		$this->db->order_by('id', 'DESC');
-		$query=$this->db->get('tbl_slvl');
-		$id = $query->row()->id;
-		$startdate = $query->row()->effective_date_start;
+		$query=$this->db->get('tbl_slvl'); 
+		$id = $query->row()->id; 
+		$startdate = $query->row()->effective_date_start; 
 		$enddate = $query->row()->effective_date_end;
 		$date = date('w', strtotime($startdate));
 
 		$data = array(
 			'for_id'               => $id, 
-			'employee_number'      => $explod_name[1],
-			'name'                 => $explod_name[0],
-			'date'								 =>	$start_date,
-			'date_start' 					 => $start_date,
-			'date_end'             => $end_date,
-			'type'                 => $explode_type[0],
-			'type_name'            => $explode_type[1]. ' ' .'(' . $hf . ')' ,
-			'status'               => 'FOR APPROVAL'
+			'employee_number'      => $explod_name[1], 
+			'name'                 => $explod_name[0], 
+			'date'				   => $start_date,  
+			'date_start' 		   => $start_date,  
+			'date_end'             => $end_date,   
+			'type'                 => $explode_type[0], 
+			'type_name'            => $explode_type[1]. ' ' .'(' . $hf . ')' ,    
+			'status'               => 'FOR APPROVAL' 
 		);
 
 		$this->db->insert('tbl_remarks', $data);
@@ -1503,6 +1897,22 @@ class Payroll_model extends CI_Model {
 			$this->db->where('id', $id); 
 			$this->db->update('tbl_slvl', $data); 
 		} 
+		elseif($hf == 'HFAM' || $hf == 'HFPM' && $explod_type[0] == 'EL')
+		{
+			$data = array( 
+				'slvl_num' => .5
+			); 
+			$this->db->where('id', $id); 
+			$this->db->update('tbl_slvl', $data); 
+		}
+		elseif($hf == 'HFAM' || $hf == 'HFPM' && $explod_type[0] == 'BL')
+		{
+			$data = array( 
+				'slvl_num' => .5
+			); 
+			$this->db->where('id', $id); 
+			$this->db->update('tbl_slvl', $data); 
+		}
 		elseif($hf == 'WD')
 		{
 			$start_date = $startdate; 
@@ -1533,14 +1943,20 @@ class Payroll_model extends CI_Model {
 		$start_date = date('Y-m-d', strtotime($this->input->post('start_date')));
 		$end_date = date('Y-m-d', strtotime($this->input->post('start_date')));
 		$name = $this->input->post('name');
+		$days = $this->input->post('days');
+
 		$supervisor_id = $this->session->userdata('supervisor_id');
 		$is_hr = $this->session->userdata('is_hr');
 		$is_rfa = $this->session->userdata('is_rfa');
 		$is_verify = $this->session->userdata('is_verify');
 		$is_oichead = $this->session->userdata('is_oichead');
+		$is_gm = $this->session->userdata('is_gm');
 		$is_noted = $this->session->userdata('is_noted');
 		$sl_credit = $this->input->post('sl_credit');
 		$vl_credit = $this->input->post('vl_credit');
+		$el_credit = $this->input->post('el_credit');
+		$bl_credit = $this->input->post('bl_credit');
+		$is_fa = $this->session->userdata('is_fa');
  
 		$explod_name = explode("|", $name);
 
@@ -1559,6 +1975,7 @@ class Payroll_model extends CI_Model {
 
 		$cur_date = $crrntDate;
 		$limitdays = 0;
+		//VL PROCESS
 		for($k = 1; $k <= $numberDays; $k++)
 		{
 			$conv_date = strtotime($crrntDate);
@@ -1571,14 +1988,34 @@ class Payroll_model extends CI_Model {
 			}
 		}
 
-		if($start_date >= $crrntDate && $limitdays >= 3 && $explode_type[0] == 'VL' && $vl_credit != 0 || $explode_type[0] == 'SL'  && $limitdays <= 1  && $sl_credit != 0  || $explode_type[0] == 'AB')
+		$limitdays1 = 0;
+		for($k = 1; $k <= $numberDays; $k++)
+		{
+			$conv_date = strtotime($start_date);
+			$cur_date = date('Y-m-d', strtotime('+' . $k .' days', $conv_date));
+			$w_date = date('w', strtotime($cur_date));
+
+			if($w_date != 6 && $w_date != 0)
+			{
+				$limitdays1++;
+			}
+		} 
+		$this->db->select('id,rec_vl,rec_el');
+		$this->db->order_by('id','DESC');
+		$query = $this->db->get('leave_restriction');
+		$rec_vl = $query->row()->rec_vl;
+		$rec_el = $query->row()->rec_el;
+		
+		//$explode_type[0] == 'SL' && $sl_credit != 0 && $limitdays1 <= $days &&  $start_date <= $crrntDate || $explode_type[0] == 'VL' && $vl_credit != 0 && $start_date >= $crrntDate && $limitdays >= 3 || $explode_type[2] == 'SL' && $limitdays1 <= $days && $start_date <= $crrntDate || $explode_type[2] == 'VL' && $start_date >= $crrntDate && $limitdays >= 3 || $explode_type[0] == 'EL' && $el_credit != 0 && $limitdays1 <= 1 &&  $start_date <= $crrntDate || $explode_type[0] == 'BL'
+		if($explode_type[0] == 'SL' && $sl_credit != 0 && $limitdays1 <= $days &&  $start_date <= $crrntDate || $explode_type[0] == 'VL' && $vl_credit != 0 && $start_date >= $crrntDate && $limitdays >= $rec_vl || $explode_type[2] == 'SL' && $limitdays1 <= $days && $start_date <= $crrntDate || $explode_type[2] == 'VL' && $start_date >= $crrntDate && $limitdays >= $rec_vl || $explode_type[0] == 'EL' && $el_credit != 0 && $limitdays1 <= $rec_el &&  $start_date <= $crrntDate || $explode_type[0] == 'BL' || $explode_type[2] == 'AB' || $explode_type[2] == 'SSS' || $explode_type[2] == 'PL')
+		//if($explode_type[0] == 'VL' && $vl_credit != 0 && $start_date >= $crrntDate && $limitdays >= 3 || $explode_type[0] == 'SL' && $sl_credit != 0 && $limitdays1 <= $days &&  $start_date <= $crrntDate)
 		{
 			if($is_rfa != 0 || $is_fa != 0 || $is_verify != 0)
 			{
 				$data = array(
 					'employee_number'      => $explod_name[1],
 					'name'                 => $explod_name[0],
-					'date'								 => $start_date,
+					'date'				   => $start_date,
 					'effective_date_start' => $start_date,
 					'effective_date_end'   => $end_date,
 					'type'                 => $explode_type[0],
@@ -1594,12 +2031,33 @@ class Payroll_model extends CI_Model {
 
 				$this->db->insert('tbl_slvl', $data);
 			}
+			elseif($is_gm == 1)
+			{
+				$data = array(
+					'employee_number'      => $explod_name[1],
+					'name'                 => $explod_name[0],
+					'date'				   => $start_date,
+					'effective_date_start' => $start_date,
+					'effective_date_end'   => $end_date,
+					'type'                 => $explode_type[0],
+					'sl_am_pm'             => $hf,
+					'type_name'            => $explode_type[1],
+					'reason'               => $this->input->post('reason'),
+					'encode_by'            => $this->session->userdata('username'),
+					'encode_date'          => date('Y-m-d h:i:s'),
+					'branch_id'            => $this->session->userdata('branch_id'),
+					'department_id'        => $this->session->userdata('department_id'),
+					'status'               => 'Recommending for Verification'
+				);
+
+				$this->db->insert('tbl_slvl', $data);
+			}
 			else
 			{
 				$data = array(
 					'employee_number'      => $explod_name[1],
 					'name'                 => $explod_name[0],
-					'date'								 => $start_date,
+					'date'				   => $start_date,
 					'effective_date_start' => $start_date,
 					'effective_date_end'   => $end_date,
 					'type'                 => $explode_type[0],
@@ -1628,8 +2086,8 @@ class Payroll_model extends CI_Model {
 				'for_id'               => $id, 
 				'employee_number'      => $explod_name[1],
 				'name'                 => $explod_name[0],
-				'date'								 =>	$start_date,
-				'date_start' 					 => $start_date,
+				'date'				   => $start_date,
+				'date_start' 		   => $start_date,
 				'date_end'             => $end_date,
 				'type'                 => $explode_type[0],
 				'type_name'            => $explode_type[1]. ' ' .'(' . $hf . ')' ,
@@ -1674,7 +2132,6 @@ class Payroll_model extends CI_Model {
 			} 
 			elseif($hf == 'HF' && $explode_type[0] == 'AB')
 			{
-				// 30 mins for cwwut
 				$data = array( 
 					'slvl_num' => .5
 				); 
@@ -1746,12 +2203,28 @@ class Payroll_model extends CI_Model {
 				$this->db->where('id', $id); 
 				$this->db->update('tbl_slvl', $data); 
 			} 
+			elseif($hf == 'HFAM' || $hf == 'HFPM' && $explod_type[0] == 'EL')
+			{
+				$data = array( 
+					'slvl_num' => .5
+				); 
+				$this->db->where('id', $id); 
+				$this->db->update('tbl_slvl', $data); 
+			}
+			elseif($hf == 'HFAM' || $hf == 'HFPM' && $explod_type[0] == 'BL')
+			{
+				$data = array( 
+					'slvl_num' => .5
+				); 
+				$this->db->where('id', $id); 
+				$this->db->update('tbl_slvl', $data); 
+			}
 			elseif($hf == 'WD')
 			{
 				$start_date = $startdate; 
-		   	$end_date = $enddate;
+		   		$end_date = $enddate;
 
-		   	$datediff = (strtotime($end_date) - strtotime($start_date));
+		   		$datediff = (strtotime($end_date) - strtotime($start_date));
 				$num_dates = floor($datediff / (60 * 60 * 24));
 				$num_dates = $num_dates + 1;
 
@@ -1765,15 +2238,11 @@ class Payroll_model extends CI_Model {
 			$trans = $this->db->trans_complete();
 
 			return $trans;
+			//print_r('1');
 		}
-		else
-		{
-			return FALSE;
-		}
-		
 	}
 
-	public function update_slvl($id)
+	public function update_slvl($id) 
 	{
 		$this->db->trans_start();
 
@@ -1801,6 +2270,7 @@ class Payroll_model extends CI_Model {
 
 		$cur_date = $crrntDate;
 		$limitdays = 0;
+		//VL PROCESS
 		for($k = 1; $k <= $numberDays; $k++)
 		{
 			$conv_date = strtotime($crrntDate);
@@ -1813,12 +2283,32 @@ class Payroll_model extends CI_Model {
 			}
 		}
 
-		if($limitdays >= 3 && $explode_type[0] == 'VL' || $limitdays <= 2 && $explode_type[0] == 'SL' || $explode_type[0] == 'AB')
+		$limitdays1 = 0;
+		for($k = 1; $k <= $numberDays; $k++)
+		{
+			$conv_date = strtotime($start_date);
+			$cur_date = date('Y-m-d', strtotime('+' . $k .' days', $conv_date));
+			$w_date = date('w', strtotime($cur_date));
+
+			if($w_date != 6 && $w_date != 0)
+			{
+				$limitdays1++;
+			}
+		} 
+		$this->db->select('id,rec_vl,rec_el');
+		$this->db->order_by('id','DESC');
+		$query = $this->db->get('leave_restriction');
+		$rec_vl = $query->row()->rec_vl;
+		$rec_el = $query->row()->rec_el;
+		
+		//$explode_type[0] == 'SL' && $sl_credit != 0 && $limitdays1 <= $days &&  $start_date <= $crrntDate || $explode_type[0] == 'VL' && $vl_credit != 0 && $start_date >= $crrntDate && $limitdays >= 3 || $explode_type[2] == 'SL' && $limitdays1 <= $days && $start_date <= $crrntDate || $explode_type[2] == 'VL' && $start_date >= $crrntDate && $limitdays >= 3 || $explode_type[0] == 'EL' && $el_credit != 0 && $limitdays1 <= 1 &&  $start_date <= $crrntDate || $explode_type[0] == 'BL'
+		if($explode_type[0] == 'SL' && $sl_credit != 0 && $limitdays1 <= $days &&  $start_date <= $crrntDate || $explode_type[0] == 'VL' && $vl_credit != 0 && $start_date >= $crrntDate && $limitdays >= $rec_vl || $explode_type[2] == 'SL' && $limitdays1 <= $days && $start_date <= $crrntDate || $explode_type[2] == 'VL' && $start_date >= $crrntDate && $limitdays >= $rec_vl || $explode_type[0] == 'EL' && $el_credit != 0 && $limitdays1 <= $rec_el &&  $start_date <= $crrntDate || $explode_type[0] == 'BL' || $explode_type[2] == 'AB' || $explode_type[2] == 'SSS' || $explode_type[2] == 'PL')
+		//if($explode_type[0] == 'VL' && $vl_credit != 0 && $start_date >= $crrntDate && $limitdays >= 3 || $explode_type[0] == 'SL' && $sl_credit != 0 && $limitdays1 <= $days &&  $start_date <= $crrntDate)
 		{
 			$data = array(
 				'employee_number'      => $explod_name[1],
 				'name'                 => $explod_name[0],
-				'date'								 =>	$start_date,
+				'date'				   => $start_date,
 				'effective_date_start' => $start_date,
 				'type'                 => $explode_type[0],
 				'sl_am_pm'             => $hf,
@@ -1835,7 +2325,7 @@ class Payroll_model extends CI_Model {
 				'date_start' => $start_date,
 				'date_end'   => $start_date,
 				'date'       => $start_date,
-				'type' 		   => $explode_type[0],
+				'type' 		 => $explode_type[0],
 				'type_name'  => $explode_type[1]. ' ' .'(' . $hf . ')' 
 			);
 
@@ -1939,8 +2429,8 @@ class Payroll_model extends CI_Model {
 			elseif($hf == 'WD' && $explode_type[0] == 'VL')
 			{
 				$start_date = $start_date; 
-		   	$end_date = $end_date;
-		   	$datediff = (strtotime($end_date) - strtotime($start_date));
+				$end_date = $end_date;
+				$datediff = (strtotime($end_date) - strtotime($start_date));
 				$num_dates = floor($datediff / (60 * 60 * 24));
 				$num_dates = $num_dates + 1;
 
@@ -2153,9 +2643,10 @@ class Payroll_model extends CI_Model {
 			tbl_ob.time_of_departure as time_in, 
 			tbl_ob.time_of_return as time_out'
 		);
+
 		$this->db->from('tbl_ob');
 		$this->db->where('id', $id);
-	  $query = $this->db->get();
+	  	$query = $this->db->get();
 
 	  return $query->row();
 	}
@@ -2166,13 +2657,13 @@ class Payroll_model extends CI_Model {
 
 		$date_ob = date('Y-m-d', strtotime($this->input->post('date')));
 		$name = $this->input->post('name');
-		$explod_name = explode("|", $name); 
+		$explod_name = explode("|", $name);  
 
 		$data_ob = array(
 			'employee_number'       => $explod_name[1], 
-			'name'          			  => $explod_name[0],
-			'date_ob'        			  => $date_ob, 
-			'type_ob'         			=> $this->input->post('ob_type'), 
+			'name'          		=> $explod_name[0],
+			'date_ob'        	    => $date_ob, 
+			'type_ob'         		=> $this->input->post('ob_type'), 
 			'site_designation_from' => $this->input->post('site_from'), 
 			'site_designation_to'   => $this->input->post('site_to'), 
 			'purpose'               => $this->input->post('purpose'), 
@@ -2219,9 +2710,9 @@ class Payroll_model extends CI_Model {
  		
  		$data = array( 
 			'employee_number'       => $explod_name[1],   
-			'name'          			  => $explod_name[0],  
-			'date_ob'        			  => $date_ob,   
-			'type_ob'         			=> $ob_type,   
+			'name'          	    => $explod_name[0],  
+			'date_ob'        	    => $date_ob,   
+			'type_ob'         	    => $ob_type,   
 			'site_designation_from' => $this->input->post('site_from'),   
 			'site_designation_to'   => $this->input->post('site_to'),   
 			'purpose'               => $this->input->post('purpose'),   
@@ -2231,7 +2722,7 @@ class Payroll_model extends CI_Model {
 			'encode_date'           => date('Y-m-d h:i:s'),
 			'branch_id'             => $this->session->userdata('branch_id'),
 			'department_id'         => $this->session->userdata('department_id'), 
-			'remarks'               => 'Recommending for Verify'  
+			'remarks'               => 'Recommending for Verification'  
 
 		);
 
@@ -2244,13 +2735,13 @@ class Payroll_model extends CI_Model {
 		$data = array(
 			'for_id'                => $id,
 			'employee_number'       => $explod_name[1],
-			'name'          			  => $explod_name[0],
-			'date'        			  	=> $date_ob, 
+			'name'              	=> $explod_name[0],
+			'date'        	     	=> $date_ob, 
 			'type'                  => 'OB',
 			'type_name'             => 'OB' . ' ' .'(' . $ob_type . ')',
-			'ob_start'     					=> $this->input->post('time_of_departure'), 
-			'ob_end'        				=> $this->input->post('time_of_return'),
-			'status'               => 'FOR APPROVAL' 
+			'ob_start'     		    => $this->input->post('time_of_departure'), 
+			'ob_end'        		=> $this->input->post('time_of_return'),
+			'status'                => 'FOR APPROVAL' 
 		);
 
 		$this->db->insert('tbl_remarks', $data);
@@ -2302,9 +2793,9 @@ class Payroll_model extends CI_Model {
 	 		{
 		 		$data = array( 
 					'employee_number'       => $explod_name[1],   
-					'name'          			  => $explod_name[0],  
-					'date_ob'        			  => $date_ob,   
-					'type_ob'         			=> $ob_type,   
+					'name'          		=> $explod_name[0],  
+					'date_ob'        		=> $date_ob,   
+					'type_ob'         	    => $ob_type,   
 					'site_designation_from' => $this->input->post('site_from'),   
 					'site_designation_to'   => $this->input->post('site_to'),   
 					'purpose'               => $this->input->post('purpose'),   
@@ -2324,9 +2815,9 @@ class Payroll_model extends CI_Model {
 	 		{
 	 			$data = array( 
 					'employee_number'       => $explod_name[1],   
-					'name'          			  => $explod_name[0],  
-					'date_ob'        			  => $date_ob,   
-					'type_ob'         			=> $this->input->post('ob_type'),   
+					'name'          	    => $explod_name[0],  
+					'date_ob'        	    => $date_ob,   
+					'type_ob'         	    => $this->input->post('ob_type'),   
 					'site_designation_from' => $this->input->post('site_from'),   
 					'site_designation_to'   => $this->input->post('site_to'),   
 					'purpose'               => $this->input->post('purpose'),   
@@ -2351,13 +2842,13 @@ class Payroll_model extends CI_Model {
 			$data = array(
 				'for_id'                => $id,
 				'employee_number'       => $explod_name[1],
-				'name'          			  => $explod_name[0],
-				'date'        			  	=> $date_ob, 
+				'name'          		=> $explod_name[0],
+				'date'        			=> $date_ob, 
 				'type'                  => 'OB',
 				'type_name'             => 'OB' . ' ' .'(' . $ob_type . ')',
-				'ob_start'     					=> $this->input->post('time_of_departure'), 
-				'ob_end'        				=> $this->input->post('time_of_return'),
-				'status'               => 'FOR APPROVAL' 
+				'ob_start'     		    => $this->input->post('time_of_departure'), 
+				'ob_end'        		=> $this->input->post('time_of_return'),
+				'status'                => 'FOR APPROVAL' 
 			);
 
 			$this->db->insert('tbl_remarks', $data);
@@ -2365,12 +2856,6 @@ class Payroll_model extends CI_Model {
 			$trans = $this->db->trans_complete();
 			return $trans;
 	 	}
-	 	else
-	 	{
-	 		return FALSE;
-	 	}
- 		
-		
 	}
 
 	public function delete_ob($id,$employee_number,$type)
@@ -2899,7 +3384,7 @@ class Payroll_model extends CI_Model {
 		$this->db->from('tbl_slvl');
 		$this->db->group_by('employee_number');
 		$this->db->where('tbl_slvl.date >=', $start_date);
-		$this->db->where('tbl_slvl.date <=', $end_date);
+		$this->db->where('tbl_slvl.date <=', $end_date); 
 		$this->db->where('type', 'VL');
 		$this->db->where('status', 'PROCESSED');	
 		$query = $this->db->get();
@@ -2985,6 +3470,19 @@ class Payroll_model extends CI_Model {
 		return $query->result();
 	}
 
+	public function get_total_ut($employee_no,$start_date, $end_date)
+	{
+		$this->db->select('SUM(tbl_undertime.ut_no) as total_undertime');
+		$this->db->from('tbl_undertime');
+		$this->db->where('tbl_undertime.employee_number', $employee_no);
+		$this->db->where('tbl_undertime.date_ut >=', $start_date);
+		$this->db->where('tbl_undertime.date_ut <=', $end_date);
+		$this->db->where('tbl_undertime.status', 'PROCESSED');
+		$query = $this->db->get();
+
+		return $query->result();
+	}
+
 	public function get_total_night_diff($start_date, $end_date)
 	{
 		$this->db->select('tbl_time_keeping.employee_number as nightdiff_employee_number, SUM(tbl_time_keeping.night_diff) as total_nightdiff');
@@ -3030,10 +3528,16 @@ class Payroll_model extends CI_Model {
 			tbl_employees.employee_number as employee_number,
 			tbl_employees.branch_id as branch_id,
 			tbl_employees.department_id as department_id,
+			tbl_employees.sl_credit as actual_sl_credit, 
+			tbl_employees.vl_credit as actual_vl_credit,
+			tbl_employees.el_credit as actual_el_credit,
+			tbl_employees.bl_credit as actual_bl_credit,
+			leave_credits.id as leave_id, 
 			leave_credits.sl_credit as sl_credit,
 			leave_credits.vl_credit as vl_credit,
 			leave_credits.elcl_credit as elcl_credit,
-			leave_credits.fl_credit as fl_credit
+			leave_credits.fl_credit as fl_credit,
+			leave_credits.absences as absences
 		");
 		$this->db->from('tbl_employees');
 		$this->db->join('leave_credits', 'leave_credits.employee_number = tbl_employees.employee_number');
@@ -3043,6 +3547,28 @@ class Payroll_model extends CI_Model {
 		$query = $this->db->get();
 
 		return $query->result();
+	}
+
+	public function get_leave_credit($id)
+	{
+		$this->db->where('id', $id);
+		$query = $this->db->get('leave_credits');
+
+		return $query->row();
+	}
+
+	public function update_leave_credit($id)
+	{
+		$data = array(
+			'sl_credit'   => $this->input->post('sl'),
+			'vl_credit'   => $this->input->post('vl'),
+			'elcl_credit' => $this->input->post('el'),
+			'fl_credit'   => $this->input->post('bl')
+		);
+		$this->db->where('id', $id);
+		$query = $this->db->update('leave_credits', $data);
+
+		return $query;
 	}
 
 	public function get_user()
@@ -3445,6 +3971,7 @@ class Payroll_model extends CI_Model {
 		$supervisor_id = $this->session->userdata('supervisor_id');
 		$is_hr = $this->session->userdata('is_hr');
 		$is_rfa = $this->session->userdata('is_rfa');
+		$is_fa = $this->session->userdata('is_fa');
 		$is_verify = $this->session->userdata('is_verify');
 		$is_oichead = $this->session->userdata('is_oichead');
 		$is_noted = $this->session->userdata('is_noted');
@@ -3459,31 +3986,36 @@ class Payroll_model extends CI_Model {
 		$numberDays = $timeDiff/86400;
 
 		$cur_date = $crrntDate;
-		$limitdays = 0;
+		$limitdays1 = 0;
 		for($k = 1; $k <= $numberDays; $k++)
 		{
-			$conv_date = strtotime($crrntDate);
+			$conv_date = strtotime($date_ut);
 			$cur_date = date('Y-m-d', strtotime('+' . $k .' days', $conv_date));
 			$w_date = date('w', strtotime($cur_date));
 
 			if($w_date != 6 && $w_date != 0)
 			{
-				$limitdays++;
+				$limitdays1++;
 			}
-		}
+		} 
 
-		if($limitdays == 0)
+		$this->db->select('id,rec_ut,');
+		$this->db->order_by('id','DESC');
+		$query = $this->db->get('leave_restriction');
+		$rec_ut = $query->row()->rec_ut;
+
+		if($limitdays1 <= $rec_ut && $date_ut <= $crrntDate)
 		{
 			if($is_rfa != 0 || $is_fa != 0 || $is_verify != 0)
 			{
-					$data = array(
+				$data = array(
 					'employee_number' => $explode_name[1],
 					'name'            => $explode_name[0],
 					'date_ut'         => $date_ut,
 					'time_out'        => $time_out,
 					'reason'          => $reason,
 					'status'          => 'FOR APPROVAL',
-					'encode_by'				=> $this->session->userdata('username'),
+					'encode_by'		  => $this->session->userdata('username'),
 					'encode_date'     => date('Y-m-d h:i:s'),
 					'branch_id'       => $this->session->userdata('branch_id'),
 					'department_id'   => $this->session->userdata('department_id')
@@ -3492,14 +4024,14 @@ class Payroll_model extends CI_Model {
 
 			else
 			{
-					$data = array(
+				$data = array(
 					'employee_number' => $explode_name[1],
 					'name'            => $explode_name[0],
 					'date_ut'         => $date_ut,
 					'time_out'        => $time_out,
 					'reason'          => $reason,
 					'status'          => 'Recommending for Approval',
-					'encode_by'				=> $this->session->userdata('username'),
+					'encode_by'		  => $this->session->userdata('username'),
 					'encode_date'     => date('Y-m-d h:i:s'),
 					'branch_id'       => $this->session->userdata('branch_id'),
 					'department_id'   => $this->session->userdata('department_id')
@@ -3517,22 +4049,211 @@ class Payroll_model extends CI_Model {
 			$date_ut = $query->row()->date_ut;
 			$time_out = $query->row()->time_out;
 			$w_date = date('w', strtotime($date_ut));
-
+			
 			$data = array(
-				'for_id'  				=> $id,
+				'for_id'  		  => $id,
 				'employee_number' => $employee_number,
 				'name'            => $name,
-				'type'						=> 'UT',
+				'type'			  => 'UT',
 				'type_name'       => 'UNDERTIME',
 				'date'            => $date_ut,
-				'status'          => 'FOR APPROVAL'
+				'status'          => 'FOR APPROVAL' 
 			);
 
 			$this->db->insert('tbl_remarks', $data);
 
+			$this->db->select('daily_in,daily_out,daily_friday_out,casual_in,casual_out,casual_friday_out');
+			$this->db->order_by('id','DESC');
+			$query1 = $this->db->get('tbl_schedules');
+			// REGULAR EMPLOYEE TIME IN AND OUT
+			$daily_in = $query1->row()->daily_in; 
+			$daily_out  = $query1->row()->daily_out;
+			$daily_friday_out = $query1->row()->daily_friday_out;
+			//CASUAL TIME IN AND OUT
+			$casual_in = $query1->row()->casual_in;
+			$casual_out = $query1->row()->casual_out;
+			$casual_friday_out = $query1->row()->casual_friday_out;
+
+			//REGULAR EMPLOYEE CONVERT TO MINS TIME IN AND OUT
+			$explod_in = explode(':', $daily_in);
+			$daily_in_mins = $explod_in[0] * 60;
+			$explod_out = explode(':', $daily_out);
+			$daily_out_mins = $explod_out[0] * 60;
+			$explode_fri_out = explode(':', $daily_friday_out);
+			$daily_friday_out_mins = $explode_fri_out[0] * 60;
+
+			//CASUAL CONVERT TO MINS TIME IN AND OUT
+			$explod_casual_in = explode(':', $casual_in);
+			$casual_daily_in_mins = $explod_casual_in[0] * 60;
+			$explod_casual_out = explode(':', $casual_out);
+			$casual_out_mins = $explod_casual_out[0] * 60;
+			$explod_casual_friday_out = explode(':', $casual_friday_out);
+			$casual_friday_out_mins = $explod_casual_friday_out[0] * 60;
+
 			if($w_date != 5)
 			{
-				$mon_thru = 1050;
+				if($employee_number == 10195)
+				{
+					$mon_thru = $casual_out_mins;
+					$explode_time = explode(':', $time_out);
+					$hr = $explode_time[0] * 60;
+					$hr_mins = $hr + $explode_time[1];
+					$total_ut = $mon_thru - $hr_mins;
+	
+					$data = array(
+						'ut_no' => $total_ut
+					);
+	
+					$this->db->where('id', $id);
+					$this->db->update('tbl_undertime', $data);
+				}
+				else 
+				{
+					$mon_thru = $daily_out_mins;
+					$explode_time = explode(':', $time_out);
+					$hr = $explode_time[0] * 60;
+					$hr_mins = $hr + $explode_time[1];
+					$total_ut = $mon_thru - $hr_mins;
+	
+					$data = array(
+						'ut_no' => $total_ut
+					);
+	
+					$this->db->where('id', $id);
+					$this->db->update('tbl_undertime', $data);	
+				}
+				
+			}
+			elseif($w_date == 5)
+			{
+				if($employee_number == 10195)
+				{
+					$fri = $casual_friday_out_mins;
+					$explode_time = explode(':', $time_out);
+					$hr = $explode_time[0] * 60;
+					$hr_mins = $hr + $explode_time[1];
+					$total_ut = $fri - $hr_mins;
+	
+					$data = array(
+						'ut_no' => $total_ut
+					);
+	
+					$this->db->where('id', $id);
+					$this->db->update('tbl_undertime', $data);
+				}
+				else 
+				{
+					$fri = $daily_friday_out_mins;
+					$explode_time = explode(':', $time_out);
+					$hr = $explode_time[0] * 60;
+					$hr_mins = $hr + $explode_time[1];
+					$total_ut = $fri - $hr_mins;
+	
+					$data = array(
+						'ut_no' => $total_ut
+					);
+	
+					$this->db->where('id', $id);
+					$this->db->update('tbl_undertime', $data);
+				}
+
+			}
+
+			$trans = $this->db->trans_complete();
+
+			return $trans;
+		}
+	}
+
+	public function add_undertime_by_hr()
+	{
+		$this->db->trans_start();
+
+		$name = $this->input->post('name');
+		$date_ut = $this->input->post('date_ut');
+		$time_out = $this->input->post('time_out');
+		$reason = $this->input->post('reason');
+		$supervisor_id = $this->session->userdata('supervisor_id');
+		$is_hr = $this->session->userdata('is_hr');
+		$is_rfa = $this->session->userdata('is_rfa');
+		$is_verify = $this->session->userdata('is_verify');
+		$is_oichead = $this->session->userdata('is_oichead');
+		$is_noted = $this->session->userdata('is_noted');
+		$is_fa = $this->session->userdata('is_fa');
+
+		$explode_name = explode("|", $name);
+
+		$data = array(
+			'employee_number' => $explode_name[1],
+			'name'            => $explode_name[0],
+			'date_ut'         => $date_ut,
+			'time_out'        => $time_out,
+			'reason'          => $reason,
+			'status'          => 'Recommending for Verification',
+			'encode_by'		  => $this->session->userdata('username'),
+			'encode_date'     => date('Y-m-d h:i:s'),
+			'branch_id'       => $explode_name[2],
+			'department_id'   => $explode_name[3]
+		);
+
+		$this->db->insert('tbl_undertime', $data);
+
+		$this->db->select('id, employee_number, name, date_ut, time_out');
+		$this->db->order_by('id', 'DESC');
+		$query = $this->db->get('tbl_undertime');	
+
+		$id = $query->row()->id;
+		$employee_number = $query->row()->employee_number;
+		$name = $query->row()->name;
+		$date_ut = $query->row()->date_ut;
+		$time_out = $query->row()->time_out;
+		$w_date = date('w', strtotime($date_ut));
+
+		$data = array(
+			'for_id'  		  => $id,
+			'employee_number' => $employee_number,
+			'name'            => $name,
+			'type'			  => 'UT',
+			'type_name'       => 'UNDERTIME',
+			'date'            => $date_ut,
+			'status'          => 'FOR APPROVAL'
+		);
+
+		$this->db->insert('tbl_remarks', $data);
+
+		$this->db->select('daily_in,daily_out,daily_friday_out,casual_in,casual_out,casual_friday_out');
+		$this->db->order_by('id','DESC');
+		$query1 = $this->db->get('tbl_schedules');
+		// REGULAR EMPLOYEE TIME IN AND OUT
+		$daily_in = $query1->row()->daily_in; 
+		$daily_out  = $query1->row()->daily_out;
+		$daily_friday_out = $query1->row()->daily_friday_out;
+		//CASUAL TIME IN AND OUT
+		$casual_in = $query1->row()->casual_in;
+		$casual_out = $query1->row()->casual_out;
+		$casual_friday_out = $query1->row()->casual_friday_out;
+
+		//REGULAR EMPLOYEE CONVERT TO MINS TIME IN AND OUT
+		$explod_in = explode(':', $daily_in);
+		$daily_in_mins = $explod_in[0] * 60;
+		$explod_out = explode(':', $daily_out);
+		$daily_out_mins = $explod_out[0] * 60;
+		$explode_fri_out = explode(':', $daily_friday_out);
+		$daily_friday_out_mins = $explode_fri_out[0] * 60;
+
+		//CASUAL CONVERT TO MINS TIME IN AND OUT
+		$explod_casual_in = explode(':', $casual_in);
+		$casual_daily_in_mins = $explod_casual_in[0] * 60;
+		$explod_casual_out = explode(':', $casual_out);
+		$casual_out_mins = $explod_casual_out[0] * 60;
+		$explod_casual_friday_out = explode(':', $casual_friday_out);
+		$casual_friday_out_mins = $explod_casual_friday_out[0] * 60;
+
+		if($w_date != 5)
+		{
+			if($employee_number == 10195)
+			{
+				$mon_thru = $casual_out_mins;
 				$explode_time = explode(':', $time_out);
 				$hr = $explode_time[0] * 60;
 				$hr_mins = $hr + $explode_time[1];
@@ -3545,9 +4266,43 @@ class Payroll_model extends CI_Model {
 				$this->db->where('id', $id);
 				$this->db->update('tbl_undertime', $data);
 			}
-			elseif($w_date == 5)
+			else 
 			{
-				$fri = 990;
+				$mon_thru = $daily_out_mins;
+				$explode_time = explode(':', $time_out);
+				$hr = $explode_time[0] * 60;
+				$hr_mins = $hr + $explode_time[1];
+				$total_ut = $mon_thru - $hr_mins;
+
+				$data = array(
+					'ut_no' => $total_ut
+				);
+
+				$this->db->where('id', $id);
+				$this->db->update('tbl_undertime', $data);	
+			}
+			
+		}
+		elseif($w_date == 5)
+		{
+			if($employee_number == 10195)
+			{
+				$fri = $casual_friday_out_mins;
+				$explode_time = explode(':', $time_out);
+				$hr = $explode_time[0] * 60;
+				$hr_mins = $hr + $explode_time[1];
+				$total_ut = $fri - $hr_mins;
+
+				$data = array(
+					'ut_no' => $total_ut
+				);
+
+				$this->db->where('id', $id);
+				$this->db->update('tbl_undertime', $data);
+			}
+			else 
+			{
+				$fri = $daily_friday_out_mins;
 				$explode_time = explode(':', $time_out);
 				$hr = $explode_time[0] * 60;
 				$hr_mins = $hr + $explode_time[1];
@@ -3561,26 +4316,33 @@ class Payroll_model extends CI_Model {
 				$this->db->update('tbl_undertime', $data);
 			}
 
-			$trans = $this->db->trans_complete();
-
-			return $trans;
 		}
-		else
-		{
-			return FALSE;
-		}
+	
+		$trans = $this->db->trans_complete();
 
-		
+		return $trans;
 	}
 
 	public function get_undertime($start_date, $end_date)
 	{
-		$this->db->select('tbl_undertime.id as id,tbl_undertime.employee_number as employee_number, tbl_undertime.name as name, tbl_undertime.date_ut as date_ut, tbl_undertime.ut_no as ut_no, tbl_undertime.time_out as time_out, tbl_undertime.reason as reason, tbl_undertime.status as status, tbl_out_attendance.times as emp_time_out, tbl_out_attendance.dates as date');
+		$this->db->select('
+			tbl_undertime.id as id,
+			tbl_undertime.employee_number as employee_number, 
+			tbl_undertime.name as name, 
+			tbl_undertime.type as type,
+			tbl_undertime.date_ut as date_ut, 
+			tbl_undertime.ut_no as ut_no, 
+			tbl_undertime.time_out as time_out, 
+			tbl_undertime.reason as reason, 
+			tbl_undertime.status as status, 
+			tbl_out_attendance.times as emp_time_out, 
+			tbl_out_attendance.dates as date
+		');
 		$this->db->from('tbl_undertime');
 		$this->db->join('tbl_out_attendance', 'tbl_out_attendance.employee_number = tbl_undertime.employee_number AND tbl_out_attendance.dates = tbl_undertime.date_ut','left');
-		$this->db->where('date_ut >=', $start_date);
-		$this->db->where('date_ut <=', $end_date);
-
+		$this->db->order_by('tbl_undertime.date_ut', 'ASC');
+		$this->db->where('tbl_undertime.date_ut >=', $start_date);
+		$this->db->where('tbl_undertime.date_ut <=', $end_date);
 		$query = $this->db->get();
 
 		return $query->result();
@@ -3627,7 +4389,7 @@ class Payroll_model extends CI_Model {
 			'date_ut'         => $date_ut,
 			'time_out'        => $time_out,
 			'reason'          => $reason,
-			'updated_by'			=> $this->session->userdata('username'),
+			'updated_by'	  => $this->session->userdata('username'),
 			'updated_date'    => date('Y-m-d h:i:s')
 		);
 
@@ -3642,10 +4404,114 @@ class Payroll_model extends CI_Model {
 		$this->db->where('employee_number', $explode_name[1]);
 		$this->db->where('type', 'UT');
 		$this->db->update('tbl_remarks', $data);
+		
+		// SELECT EMPLOYEE NUMBER 
+		$this->db->where('id', $id);
+		$this->db->select('id, employee_number, name, date_ut, time_out');
+		$query = $this->db->get('tbl_undertime');	
+		$employee_number = $query->row()->employee_number;
+		
 
-		if($w_date == 5)
+		$this->db->select('daily_in,daily_out,daily_friday_out,casual_in,casual_out,casual_friday_out');
+		$this->db->order_by('id','DESC');
+		$query1 = $this->db->get('tbl_schedules');
+		// REGULAR EMPLOYEE TIME IN AND OUT
+		$daily_in = $query1->row()->daily_in; 
+		$daily_out  = $query1->row()->daily_out;
+		$daily_friday_out = $query1->row()->daily_friday_out;
+		//CASUAL TIME IN AND OUT
+		$casual_in = $query1->row()->casual_in;
+		$casual_out = $query1->row()->casual_out;
+		$casual_friday_out = $query1->row()->casual_friday_out;
+
+		//REGULAR EMPLOYEE CONVERT TO MINS TIME IN AND OUT
+		$explod_in = explode(':', $daily_in);
+		$daily_in_mins = $explod_in[0] * 60;
+		$explod_out = explode(':', $daily_out);
+		$daily_out_mins = $explod_out[0] * 60;
+		$explode_fri_out = explode(':', $daily_friday_out);
+		$daily_friday_out_mins = $explode_fri_out[0] * 60;
+
+		//CASUAL CONVERT TO MINS TIME IN AND OUT
+		$explod_casual_in = explode(':', $casual_in);
+		$casual_daily_in_mins = $explod_casual_in[0] * 60;
+		$explod_casual_out = explode(':', $casual_out);
+		$casual_out_mins = $explod_casual_out[0] * 60;
+		$explod_casual_friday_out = explode(':', $casual_friday_out);
+		$casual_friday_out_mins = $explod_casual_friday_out[0] * 60;
+
+		if($w_date != 5)
 		{
-			$fri = 990;
+			if($employee_number == 10195)
+			{
+				$mon_thru = $casual_out_mins;
+				$explode_time = explode(':', $time_out);
+				$hr = $explode_time[0] * 60;
+				$hr_mins = $hr + $explode_time[1];
+				$total_ut = $mon_thru - $hr_mins;
+
+				$data = array(
+					'ut_no' => $total_ut
+				);
+
+				$this->db->where('id', $id);
+				$this->db->update('tbl_undertime', $data);
+			}
+			else 
+			{
+				$mon_thru = $daily_out_mins;
+				$explode_time = explode(':', $time_out);
+				$hr = $explode_time[0] * 60;
+				$hr_mins = $hr + $explode_time[1];
+				$total_ut = $mon_thru - $hr_mins;
+
+				$data = array(
+					'ut_no' => $total_ut
+				);
+
+				$this->db->where('id', $id);
+				$this->db->update('tbl_undertime', $data);	
+			}
+			
+		}
+		elseif($w_date == 5)
+		{
+			if($employee_number == 10195)
+			{
+				$fri = $casual_friday_out_mins;
+				$explode_time = explode(':', $time_out);
+				$hr = $explode_time[0] * 60;
+				$hr_mins = $hr + $explode_time[1];
+				$total_ut = $fri - $hr_mins;
+
+				$data = array(
+					'ut_no' => $total_ut
+				);
+
+				$this->db->where('id', $id);
+				$this->db->update('tbl_undertime', $data);
+			}
+			else 
+			{
+				$fri = $daily_friday_out_mins;
+				$explode_time = explode(':', $time_out);
+				$hr = $explode_time[0] * 60;
+				$hr_mins = $hr + $explode_time[1];
+				$total_ut = $fri - $hr_mins;
+
+				$data = array(
+					'ut_no' => $total_ut
+				);
+
+				$this->db->where('id', $id);
+				$this->db->update('tbl_undertime', $data);
+			}
+
+		}
+
+		/*if($w_date == 5)
+		{
+			$fri = 1020;
 			$explode_time = explode(':', $time_out);
 			$hr = $explode_time[0] * 60;
 			$hr_mins = $hr + $explode_time[1];
@@ -3660,7 +4526,7 @@ class Payroll_model extends CI_Model {
 		}
 		else
 		{
-			$mon_thru = 1050;
+			$mon_thru = 1020;
 			$explode_time = explode(':', $time_out);
 			$hr = $explode_time[0] * 60;
 			$hr_mins = $hr + $explode_time[1];
@@ -3672,7 +4538,7 @@ class Payroll_model extends CI_Model {
 
 			$this->db->where('id', $id);
 			$this->db->update('tbl_undertime', $data);
-		}
+		}*/
 
 		$trans = $this->db->trans_complete();
 
@@ -3718,53 +4584,454 @@ class Payroll_model extends CI_Model {
 		$this->db->where('tbl_undertime.date_ut <=', $end_date);
 		$query = $this->db->get();
 		
+		$this->db->select('daily_in,daily_out,daily_friday_out,casual_in,casual_out,casual_friday_out');
+		$this->db->order_by('id','DESC');
+		$query1 = $this->db->get('tbl_schedules');
+		// REGULAR EMPLOYEE TIME IN AND OUT
+		$daily_in = $query1->row()->daily_in; 
+		$daily_out  = $query1->row()->daily_out;
+		$daily_friday_out = $query1->row()->daily_friday_out;
+		//CASUAL TIME IN AND OUT
+		$casual_in = $query1->row()->casual_in;
+		$casual_out = $query1->row()->casual_out;
+		$casual_friday_out = $query1->row()->casual_friday_out;
+
+		//REGULAR EMPLOYEE CONVERT TO MINS TIME IN AND OUT
+		$explod_in = explode(':', $daily_in);
+		$daily_in_mins = $explod_in[0] * 60;
+
+		$explod_out = explode(':', $daily_out);
+		$daily_out_mins = $explod_out[0] * 60;
+
+		$explode_fri_out = explode(':', $daily_friday_out);
+		$daily_friday_out_mins = $explode_fri_out[0] * 60;
+
+		//CASUAL CONVERT TO MINS TIME IN AND OUT
+		$explod_casual_in = explode(':', $casual_in);
+		$casual_daily_in_mins = $explod_casual_in[0] * 60;
+
+		$explod_casual_out = explode(':', $casual_out);
+		$casual_out_mins = $explod_casual_out[0] * 60;
+
+		$explod_casual_friday_out = explode(':', $casual_friday_out);
+		$casual_friday_out_mins = $explod_casual_friday_out[0] * 60;
+
 		foreach($query->result() as $ut)
 		{
-			$explod_time_out = explode(' ', $ut->emp_time_out);
-			$explod_hr_mins = explode(':', $explod_time_out[1]);
-			$convert_hrs = $explod_hr_mins[0] * 60 + $explod_hr_mins[1];
-			//echo $convert_hrs . '|';
-
-			$weekdate = date('w', strtotime($ut->date_ut)); 
-			
-			if($weekdate <= 4)
+			if($ut->emp_time_out == NULL)
 			{
-				$mon_thru = 1050;
-				$total_ut = $mon_thru - $convert_hrs;
+				$total_ut = '';
+				$ut->is_correct = 0;	
+			}
+			else
+			{
+				$explod_time_out = explode(' ', $ut->emp_time_out);
+				$explod_hr_mins = explode(':', $explod_time_out[1]);
+				$convert_hrs = $explod_hr_mins[0] * 60 + $explod_hr_mins[1];
+				//echo $convert_hrs . '|';
 
-				if($total_ut >= $ut->ut_no)
+				$weekdate = date('w', strtotime($ut->date_ut)); 
+				
+				if($weekdate <= 4)
 				{
-					//echo $ut->employee_number . ':' . 'SUCCESS' . ' ';
-					$ut->is_correct = 1;
+					if($ut->employee_number == 10195)
+					{
+						//$casual_mon_thru = 1080;
+						$casual_mon_thru = $casual_out_mins;
+						$total_ut = $casual_mon_thru - $convert_hrs;
+
+						if($total_ut == $ut->ut_no)
+						{
+							//echo $ut->employee_number . ':' . 'SUCCESS' . ' ';
+							$ut->is_correct = 1;
+						}
+						else
+						{
+							//echo $ut->employee_number . ':' . 'FAILED' . ' ';
+							$ut->is_correct = 0;
+						}
+					}
+					else 
+					{
+						//$mon_thru = 1020;
+						$mon_thru = $daily_out_mins;
+						$total_ut = $mon_thru - $convert_hrs;
+	
+						if($total_ut == $ut->ut_no)
+						{
+							//echo $ut->employee_number . ':' . 'SUCCESS' . ' ';
+							$ut->is_correct = 1;
+						}
+						else
+						{
+							//echo $ut->employee_number . ':' . 'FAILED' . ' ';
+							$ut->is_correct = 0;
+						}
+					}
+
 				}
-				else
+				elseif($weekdate == 5)
 				{
-					//echo $ut->employee_number . ':' . 'FAILED' . ' ';
-					$ut->is_correct = 0;
+					if($ut->employee_number == 10195)
+					{
+						//$casual_friday = 1080;
+						$casual_friday = $casual_friday_out_mins;
+						$total_ut_friday = $casual_friday - $convert_hrs;
+	
+						if($total_ut_friday == $ut->ut_no)
+						{
+							//echo $ut->employee_number . ':' . 'SUCCESS' . ' ';
+							$ut->is_correct = 1;
+						}
+						else
+						{
+							//echo $ut->employee_number . ':' . 'FAILED' . ' ';
+							$ut->is_correct = 0;
+						}
+					}
+					else 
+					{
+						//$friday = 1020;
+						$friday = $daily_friday_out_mins;
+						$total_ut_friday = $friday - $convert_hrs;
+	
+						if($total_ut_friday == $ut->ut_no)
+						{
+							//echo $ut->employee_number . ':' . 'SUCCESS' . ' ';
+							$ut->is_correct = 1;
+						}
+						else
+						{
+							//echo $ut->employee_number . ':' . 'FAILED' . ' ';
+							$ut->is_correct = 0;
+						}	
+					}
+
 				}
 			}
-			elseif($weekdate == 5)
-			{
-				$friday = 990;
-				$total_ut_friday = $friday - $convert_hrs;
-
-				if($total_ut_friday >= $ut->ut_no)
-				{
-					//echo $ut->employee_number . ':' . 'SUCCESS' . ' ';
-					$ut->is_correct = 1;
-				}
-				else
-				{
-					//echo $ut->employee_number . ':' . 'FAILED' . ' ';
-					$ut->is_correct = 0;
-				}
-			}
-			
 		}
-		/*echo '<pre>';
-		print_r($query->result());
-		echo '</pre>';*/
 
 		return $query->result();
+	}
+
+	public function add_adjusment_vl()
+	{
+		$this->db->trans_start();
+
+		$name = $this->input->post('name');
+		$type = $this->input->post('type');
+		$adjust_date = $this->input->post('adjust_date');
+		$cutoff_date = $this->input->post('cutoff_date');
+		$adjustment = $this->input->post('adjustment');
+		$remarks = $this->input->post('remarks');
+
+		$explod_name = explode('|', $name);
+		$explod_type = explode('|', $type);
+
+		$data_adj = array(
+			'employee_number' => $explod_name[0],
+			'name'            => $explod_name[1],
+			'adj_date'        => $adjust_date,
+			'cutoff_date'     => $cutoff_date,
+			'type'            => $explod_type[0],
+			'adjustment'      => $adjustment,
+			'remarks'         => $remarks,
+			'encode_by'       => $this->session->userdata('username'),
+			'encode_date'     => date('Y-m-d h:i:s')
+		);
+		$this->db->insert('tbl_adjustment', $data_adj);
+
+		$data = array(
+			'employee_number'      => $explod_name[0],
+			'name'                 => $explod_name[1],
+			'type'                 => $explod_type[0],
+			'sl_am_pm'             => 'ADJ',
+			'type_name'            => $explod_type[1],
+			'date'                 => $cutoff_date,
+			'effective_date_start' => $cutoff_date,
+			'effective_date_end'   => $cutoff_date,
+			'slvl_num'             => $adjustment,
+			'branch_id'            => $explod_name[2],
+			'department_id'        => $explod_name[3],
+			'encode_by'       	   => $this->session->userdata('username'),
+			'encode_date'          => date('Y-m-d h:i:s'),
+			'process_by'           => $this->session->userdata('username'),
+			'process_date'         => date('Y-m-d h:i:s'),
+			'reason'               => $remarks,
+			'status'               => 'PROCESSED'
+		);
+		$this->db->insert('tbl_slvl', $data);
+
+		$this->db->select('vl_credit');
+		$this->db->where('employee_number', $explod_name[0]);
+		$query = $this->db->get('leave_credits');
+
+		$vl_credit = $query->row()->vl_credit;
+		$compute_vl = $vl_credit - $adjustment;
+
+		$data_leave_credits = array(
+			'vl_credit' => $compute_vl
+		);
+
+		$this->db->where('employee_number', $explod_name[0]);
+		$this->db->update('leave_credits', $data_leave_credits);
+
+		$trans = $this->db->trans_complete();
+
+		return $trans;
+	}
+
+	public function add_adjusment_sl()
+	{
+		$this->db->trans_start();
+
+		$name = $this->input->post('name');
+		$type = $this->input->post('type');
+		$adjust_date = $this->input->post('adjust_date');
+		$cutoff_date = $this->input->post('cutoff_date');
+		$adjustment = $this->input->post('adjustment');
+		$remarks = $this->input->post('remarks');
+
+		$explod_name = explode('|', $name);
+		$explod_type = explode('|', $type);
+
+		$data_adj = array(
+			'employee_number' => $explod_name[0],
+			'name'            => $explod_name[1],
+			'adj_date'        => $adjust_date,
+			'cutoff_date'     => $cutoff_date,
+			'type'            => $explod_type[0],
+			'adjustment'      => $adjustment,
+			'remarks'         => $remarks,
+			'encode_by'       => $this->session->userdata('username'),
+			'encode_date'     => date('Y-m-d h:i:s')
+		);
+		$this->db->insert('tbl_adjustment', $data_adj);
+
+		$data = array(
+			'employee_number'      => $explod_name[0],
+			'name'                 => $explod_name[1],
+			'type'                 => $explod_type[0],
+			'sl_am_pm'             => 'ADJ',
+			'type_name'            => $explod_type[1],
+			'date'                 => $cutoff_date,
+			'effective_date_start' => $cutoff_date,
+			'effective_date_end'   => $cutoff_date,
+			'slvl_num'             => $adjustment,
+			'branch_id'            => $explod_name[2],
+			'department_id'        => $explod_name[3],
+			'encode_by'       	   => $this->session->userdata('username'),
+			'encode_date'          => date('Y-m-d h:i:s'),
+			'process_by'           => $this->session->userdata('username'),
+			'process_date'         => date('Y-m-d h:i:s'),
+			'reason'               => $remarks,
+			'status'               => 'PROCESSED'
+		);
+		$this->db->insert('tbl_slvl', $data);
+
+		$this->db->select('sl_credit');
+		$this->db->where('employee_number', $explod_name[0]);
+		$query = $this->db->get('leave_credits');
+
+		$sl_credit = $query->row()->sl_credit;
+		$compute_sl = $sl_credit - $adjustment;
+
+		$data_leave_credits = array(
+			'sl_credit' => $compute_sl
+		);
+
+		$this->db->where('employee_number', $explod_name[0]);
+		$this->db->update('leave_credits', $data_leave_credits);
+
+		$trans = $this->db->trans_complete();
+
+		return $trans;
+	}
+
+	public function add_adjusment_ab()
+	{
+		$this->db->trans_start();
+
+		$name = $this->input->post('name');
+		$type = $this->input->post('type');
+		$adjust_date = $this->input->post('adjust_date');
+		$cutoff_date = $this->input->post('cutoff_date');
+		$adjustment = $this->input->post('adjustment');
+		$remarks = $this->input->post('remarks');
+		$cwwut = $this->input->post('cwwut');
+
+		$explod_name = explode('|', $name);
+		$explod_type = explode('|', $type);
+
+		$data_adj = array(
+			'employee_number' => $explod_name[0],
+			'name'            => $explod_name[1],
+			'adj_date'        => $adjust_date,
+			'cutoff_date'     => $cutoff_date,
+			'type'            => $explod_type[0],
+			'adjustment'      => $adjustment,
+			'remarks'         => $remarks,
+			'encode_by'       => $this->session->userdata('username'),
+			'encode_date'     => date('Y-m-d h:i:s')
+		);
+		$this->db->insert('tbl_adjustment', $data_adj);
+
+		$data = array(
+			'employee_number'      => $explod_name[0],
+			'name'                 => $explod_name[1],
+			'type'                 => $explod_type[0],
+			'sl_am_pm'             => 'ADJ',
+			'type_name'            => $explod_type[1],
+			'date'                 => $cutoff_date,
+			'effective_date_start' => $cutoff_date,
+			'effective_date_end'   => $cutoff_date,
+			'slvl_num'             => $adjustment,
+			'branch_id'            => $explod_name[2],
+			'department_id'        => $explod_name[3],
+			'encode_by'       	   => $this->session->userdata('username'),
+			'encode_date'          => date('Y-m-d h:i:s'),
+			'process_by'           => $this->session->userdata('username'),
+			'process_date'         => date('Y-m-d h:i:s'),
+			'reason'               => $remarks,
+			'status'               => 'PROCESSED'
+		);
+		$this->db->insert('tbl_slvl', $data);
+
+		$this->db->select('id');
+		$this->db->order_by('id', 'DESC');
+		$query = $this->db->get('tbl_slvl');	
+
+		$id = $query->row()->id;
+		
+		$w_date = date('w', strtotime($adjust_date));
+
+		if($explod_type[0] = 'AB' && $w_date != 5)
+		{
+			$data = array(
+				'for_id' => $id,
+				'employee_number' => $explod_name[0],
+				'date'            => $cutoff_date,
+				'type'            => $explod_type[0],
+				'name'			  => $explod_name[1],
+				'undertime_hr'    => $cwwut,
+				'created_by'      => $this->session->userdata('username'),
+				'created_date'    => date('Y-m-d h:i:s'),
+				'process_by'	  => $this->session->userdata('username'),
+				'process_date'    => date('Y-m-d h:i:s'),
+				'status'          => 'PROCESSED'
+			);
+			$this->db->insert('tbl_cwwut', $data);
+		}
+
+		$trans = $this->db->trans_complete();
+
+		return $trans;
+	}
+
+	public function add_adjustment_ot()
+	{
+		$this->db->trans_start();
+
+		$name = $this->input->post('name');
+		$type = $this->input->post('type');
+		$adjust_date = $this->input->post('adjust_date');
+		$cutoff_date = $this->input->post('cutoff_date');
+		$adjustment = $this->input->post('adjustment');
+		$remarks = $this->input->post('remarks');
+		$cwwut = $this->input->post('cwwut');
+
+		$explod_name = explode('|', $name);
+		$explod_type = explode('|', $type);
+
+		$data_adj = array(
+			'employee_number' => $explod_name[0],
+			'name'            => $explod_name[1],
+			'adj_date'        => $adjust_date,
+			'cutoff_date'     => $cutoff_date,
+			'type'            => $explod_type[0],
+			'adjustment'      => $adjustment,
+			'remarks'         => $remarks,
+			'encode_by'       => $this->session->userdata('username'),
+			'encode_date'     => date('Y-m-d h:i:s')
+		);
+		$this->db->insert('tbl_adjustment', $data_adj);
+
+		$data = array(
+			'employee_number'  => $explod_name[0],
+			'name'			   => $explod_name[1],
+			'date_ot'          => $cutoff_date,
+			'ot_type'          => $explod_type[0],
+			'ot_type_name'     => $explod_type[1],
+			'time_in'          => '00:00',
+			'time_out'         => '00:00',
+			'ot_num'           => $adjustment,
+			'nature_of_work'   => $remarks,
+			'branch_id'        => $explod_name[2],
+			'department_id'    => $explod_name[3],
+			'encode_by'        => $this->session->userdata('username'),
+			'encode_date'      => date('Y-m-d h:i:s'),
+			'process_by'       => $this->session->userdata('username'),
+			'process_date'     => date('Y-m-d h:i:s'),
+			'status'           => 'PROCESSED'
+		);
+
+		$this->db->insert('tbl_ot', $data);
+
+		$trans = $this->db->trans_complete();
+
+		return $trans;
+	}
+
+	public function add_adjustment_ut()
+	{
+		$this->db->trans_start();
+
+		$name = $this->input->post('name');
+		$type = $this->input->post('type');
+		$adjust_date = $this->input->post('adjust_date');
+		$cutoff_date = $this->input->post('cutoff_date');
+		$adjustment = $this->input->post('adjustment');
+		$remarks = $this->input->post('remarks');
+		$cwwut = $this->input->post('cwwut');
+
+		$explod_name = explode('|', $name);
+		$explod_type = explode('|', $type);
+
+		$data_adj = array(
+			'employee_number' => $explod_name[0],
+			'name'            => $explod_name[1],
+			'adj_date'        => $adjust_date,
+			'cutoff_date'     => $cutoff_date,
+			'type'            => $explod_type[0],
+			'adjustment'      => $adjustment,
+			'remarks'         => $remarks,
+			'encode_by'       => $this->session->userdata('username'),
+			'encode_date'     => date('Y-m-d h:i:s')
+		);
+
+		$this->db->insert('tbl_adjustment', $data_adj);
+
+		$data = array(
+			'employee_number' => $explod_name[0],
+			'name'            => $explod_name[1],
+			'type'            => $explod_type[0],
+			'date_ut'         => $cutoff_date,
+			'time_out'        => '00:00',
+			'ut_no'           => $adjustment,
+			'reason'          => $remarks,
+			'branch_id'        => $explod_name[2],
+			'department_id'    => $explod_name[3],
+			'encode_by'        => $this->session->userdata('username'),
+			'encode_date'      => date('Y-m-d h:i:s'),
+			'process_by'       => $this->session->userdata('username'),
+			'process_date'     => date('Y-m-d h:i:s'),
+			'status'           => 'PROCESSED'
+		);
+
+		$this->db->insert('tbl_undertime', $data);
+
+		$trans = $this->db->trans_complete();
+
+		return $trans;
 	}
 }	
